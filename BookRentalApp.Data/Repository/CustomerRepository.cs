@@ -23,10 +23,8 @@ namespace BookRentalApp.Data.Repository
 
         public void Delete(int id)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
-            
+            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");            
             _context.Customers.Remove(p);
-
             _context.SaveChanges();
         }
 
@@ -50,7 +48,8 @@ namespace BookRentalApp.Data.Repository
 
         public Customer GetById(int id)
         {
-            return _context.Customers.FirstOrDefault(c => c.Id == id);
+            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            return p;
         }
     }
 }

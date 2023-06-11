@@ -28,8 +28,8 @@ namespace BookRentalApp.Business
             }
 
             _repository.Add(category);
-            var catDto = _mapper.Map<GetCategoryByIdDto>(category);
-            return ServiceResult<GetCategoryByIdDto>.Success(catDto, "Category added successfully");
+            var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(category);
+            return ServiceResult<GetCategoryByIdDto>.Success(categoryDtoResult, "Category added successfully");
 
         }
 
@@ -42,9 +42,9 @@ namespace BookRentalApp.Business
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Category not found", 404); //404 - Not Found
             }
 
-            var categoryDto = _mapper.Map<GetCategoryByIdDto>(category);
+            var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(category);
             _repository.Delete(id);
-            return ServiceResult<GetCategoryByIdDto>.Success(categoryDto, "Category deleted successfully");
+            return ServiceResult<GetCategoryByIdDto>.Success(categoryDtoResult, "Category deleted successfully");
             
         }
 
@@ -57,8 +57,8 @@ namespace BookRentalApp.Business
                 return ServiceResult<List<GetAllCategoriesDto>>.Failed(null, "Failed to retrieve categories", 500); //500 - Internal Server Error
             }
 
-            var categoryDtos = _mapper.Map<List<GetAllCategoriesDto>>(categories);
-            return ServiceResult<List<GetAllCategoriesDto>>.Success(categoryDtos, "Categories retrieved successfully");
+            var categoryDtosResult = _mapper.Map<List<GetAllCategoriesDto>>(categories);
+            return ServiceResult<List<GetAllCategoriesDto>>.Success(categoryDtosResult, "Categories retrieved successfully");
 
         }
 
@@ -71,8 +71,8 @@ namespace BookRentalApp.Business
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Category not found", 404); //404 - Not Found
             }
 
-            var categoryDto = _mapper.Map<GetCategoryByIdDto>(category);
-            return ServiceResult<GetCategoryByIdDto>.Success(categoryDto, "Category retrieved successfully");
+            var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(category);
+            return ServiceResult<GetCategoryByIdDto>.Success(categoryDtoResult, "Category retrieved successfully");
         }
 
         public ServiceResult<GetCategoryByIdDto> Update(int id, UpdateCategoryDto categoryDto)
@@ -91,8 +91,8 @@ namespace BookRentalApp.Business
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Failed to update the category", 500); //500 - Internal Server Error
             }
 
-            var catDto = _mapper.Map<GetCategoryByIdDto>(updatedCategory);
-            return ServiceResult<GetCategoryByIdDto>.Success(catDto, "Category updated successfully");
+            var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(updatedCategory);
+            return ServiceResult<GetCategoryByIdDto>.Success(categoryDtoResult, "Category updated successfully");
         }
     }
 }

@@ -12,9 +12,15 @@ namespace BookRentalApp.Data.Entity
 
         public string Publisher { get; set; }
 
-        public string? ISBN { get; set; } //International Standard Book Number
+        public string Translator { get; set; }
+
+        public string ISBN { get; set; } //International Standard Book Number
 
         public int Page { get; set; }
+
+        public string FirstEditionYear { get; set; }
+
+        public string Language { get; set; }
 
         private double _price;
 
