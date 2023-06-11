@@ -1,10 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using BookRentalApp.Business.Dto.Category;
+using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,13 +13,13 @@ namespace BookRentalApp.Controllers
     [Route("categories")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _repository;
+        private readonly ICategoryService _service;
         private readonly IMapper _mapper;
         private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(ICategoryRepository repository, IMapper mapper, ILogger<CategoryController> logger)
+        public CategoryController(ICategoryService service, IMapper mapper, ILogger<CategoryController> logger)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,7 +29,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                _repository.Add(_mapper.Map<Category>(categoryDto));
+                _service.Add(categoryDto);
                 return Ok();
             }
             catch (Exception ex)
@@ -45,7 +44,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var categories = _repository.GetAll(page, pageSize);
+                var categories = _service.GetAll(page, pageSize);
                 var categoryDtos = _mapper.Map<List<GetAllCategoriesDto>>(categories);
                 return Ok(categoryDtos);
             }
@@ -61,7 +60,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var category = _repository.GetById(id) ?? throw new Exception("Not Found");
+                var category = _service.GetById(id) ?? throw new Exception("Not Found");
                 var categoryDto = _mapper.Map<GetCategoryByIdDto>(category);
                 return Ok(categoryDto);
             }
@@ -77,7 +76,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var category = _repository.Update(id, _mapper.Map<Category>(categoryDto));
+                var category = _service.Update(id, categoryDto);
                 return Ok(_mapper.Map<GetCategoryByIdDto>(category));
             }
             catch (Exception ex)

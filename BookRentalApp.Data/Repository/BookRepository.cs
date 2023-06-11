@@ -3,9 +3,7 @@ using BookRentalApp.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BookRentalApp.Data.Repository
 {

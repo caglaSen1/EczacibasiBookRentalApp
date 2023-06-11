@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookRentalApp.Business.Dto.Book;
+using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,13 @@ namespace BookRentalApp.Controllers
     [Route("books")]
     public class BookController : Controller
     {
-        private readonly IBookRepository _repository;
+        private readonly IBookService _serivce;
         private readonly IMapper _mapper;
         private readonly ILogger<BookController> _logger;
 
-        public BookController(IBookRepository repository, IMapper mapper, ILogger<BookController> logger)
+        public BookController(IBookService service, IMapper mapper, ILogger<BookController> logger)
         {
-            _repository = repository;
+            _serivce = service;
             _mapper = mapper;
             _logger = logger;   
         }
@@ -28,7 +29,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                _repository.Add(_mapper.Map<Book>(bookDto));
+                _serivce.Add(_mapper.Map<Book>(bookDto));
                 return Ok();
             }
             catch (Exception ex)
@@ -43,7 +44,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var books = _repository.GetAll(page, pageSize);
+                var books = _serivce.GetAll(page, pageSize);
                 var bookDtos = _mapper.Map<List<GetAllBooksDto>>(books);
                 return Ok(bookDtos);
             }
@@ -59,7 +60,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var book = _repository.GetById(id, withCategory) ?? throw new Exception("Not Found");
+                var book = _serivce.GetById(id, withCategory) ?? throw new Exception("Not Found");
                 var bookDto = _mapper.Map<GetBookByIdDto>(book);
                 return Ok(bookDto);
             }
@@ -75,7 +76,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var book = _repository.Update(id, _mapper.Map<Book>(bookDto));
+                var book = _serivce.Update(id, _mapper.Map<Book>(bookDto));
                 return Ok(_mapper.Map<GetBookByIdDto>(book));
             }
             catch (Exception ex)

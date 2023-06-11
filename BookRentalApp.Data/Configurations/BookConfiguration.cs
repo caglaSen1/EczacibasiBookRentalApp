@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using BookRentalApp.Data.Entity;
-using System;
 
 namespace BookRentalApp.Data.Configurations
 {
@@ -13,10 +12,9 @@ namespace BookRentalApp.Data.Configurations
             builder.Property(s => s.Title).IsRequired().HasMaxLength(250);
             builder.Property(s => s.Author).IsRequired().HasMaxLength(100);
             builder.Property(s => s.Publisher).HasMaxLength(100);
-            builder.Property(s => s.ISBN).IsRequired();
             builder.Property(s => s.Price).IsRequired();
             builder.Property(s => s.Category).IsRequired();
-            builder.Property(s => s.IsRented).IsRequired();
+            builder.Property(s => s.IsAvailable).IsRequired();
             builder.Property(s => s.Price).HasPrecision(10, 2).HasAnnotation("CheckConstraint", new[] { "Price > 0" }); ;
         }
     }

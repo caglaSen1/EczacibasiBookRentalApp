@@ -3,8 +3,6 @@ using BookRentalApp.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookRentalApp.Data.Repository
 {
@@ -19,6 +17,7 @@ namespace BookRentalApp.Data.Repository
 
         public void Add(Category category)
         {
+
             _context.Categories.Add(category);
 
             _context.SaveChanges();
@@ -51,9 +50,9 @@ namespace BookRentalApp.Data.Repository
 
         public Category GetById(int id)
         {
-            return _context.Categories.FirstOrDefault(c => c.Id == id);
+            var p = _context.Categories.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            return p;
         }
 
-        
     }
 }

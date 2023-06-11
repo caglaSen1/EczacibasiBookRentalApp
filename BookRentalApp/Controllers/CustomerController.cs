@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;

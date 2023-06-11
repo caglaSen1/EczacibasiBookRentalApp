@@ -3,12 +3,8 @@ using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
-using Npgsql.TypeMapping;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookRentalApp.Business
 {
@@ -25,12 +21,12 @@ namespace BookRentalApp.Business
 
         public void Add(CreateBookDto book)
         {
-            throw new NotImplementedException();
+            //
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
 
         public List<GetAllBooksDto> GetAll(int page, int pageSize)
@@ -50,7 +46,7 @@ namespace BookRentalApp.Business
 
         public ServiceResult<GetBookByIdDto> Update(int id, UpdateBookDto book)
         {
-            var b = GetById(id);
+            var b = _repository.GetById(id);
 
             if(b is null)
             {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookRentalApp.Business.Dto.BookRental
+﻿namespace BookRentalApp.Business.Dto.BookRental
 {
     public class CreateBookRentalDto
     {

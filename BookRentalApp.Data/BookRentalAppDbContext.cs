@@ -1,6 +1,5 @@
 ﻿using BookRentalApp.Data.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BookRentalApp.Data
 {
