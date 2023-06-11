@@ -43,6 +43,7 @@ namespace BookRentalApp.Data.Repository
             p.ISBN = book.ISBN;
             p.Page = book.Page;
             p.Price = book.Price;
+            p.IsAvailable = book.IsAvailable;
 
             var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId) ?? throw new Exception("Category Not Found");
             

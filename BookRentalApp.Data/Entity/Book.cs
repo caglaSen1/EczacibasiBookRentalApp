@@ -43,7 +43,25 @@ namespace BookRentalApp.Data.Entity
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public bool IsRented { get; set; } = false;
+        public BookRental BookRental { get; set; }
+
+        private bool _isAvailable = true;
+        public bool IsAvailable
+        {
+            get => _isAvailable;
+            set
+            {
+                if (BookRental.IsRented == false)
+                {
+                    _isAvailable = true;
+                }
+                else
+                {
+                    _isAvailable = false;
+                }
+                    
+            }
+        }
 
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookRentalApp.Data.Interface;
 using BookRentalApp.Data.Repository;
+using BookRentalApp.Middleware;
 
 namespace BookRentalApp
 {
@@ -58,7 +59,7 @@ namespace BookRentalApp
                 app.UseHsts();
             }
 
-            //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 

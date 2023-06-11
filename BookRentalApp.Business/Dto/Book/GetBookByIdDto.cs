@@ -21,7 +21,6 @@ namespace BookRentalApp.Business.Dto.Book
         public double Price { get; set; }
 
         public int CategoryId { get; set; }
-
-        public bool IsRented { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

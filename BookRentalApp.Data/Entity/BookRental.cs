@@ -22,11 +22,49 @@ namespace BookRentalApp.Data.Entity
         [ForeignKey("BookId")]
         public int BookId { get; set; }
 
-        public DateTime RentalDate { get; set; }
-        public int RentalTerm { get; set; }
+        public DateTime RentalDate { get; set; } = DateTime.Today;
+        public byte HowManyDaysToRent { get; set; }
 
-        public DateTime? ReturnDate { get; set; } 
+        private DateTime _returnDate;
 
+        public DateTime ReturnDate
+        {
+            get => _returnDate;
+            set
+            {
+                _returnDate = RentalDate.AddDays(HowManyDaysToRent);
+            }
+        }
+         
+        private bool _isRented;
+
+        public bool IsRented
+        {
+            get => _isRented;
+            set
+            {
+                if (DateTime.Now > ReturnDate)
+                {
+                    _isRented = true;
+                }
+                else if(DateTime.Now <= ReturnDate)
+                {
+                    _isRented = false;
+                }
+
+            }
+        }
+
+    }
+
+    public enum HowManyDaysToRent : byte
+    {
+        FiveDays = 5,
+        TenDays = 10,
+        FifteenDays = 15,
+        TwentyDays = 20,
+        TwentyFiveDays = 25,
+        ThirtyDays = 30
 
     }
 }

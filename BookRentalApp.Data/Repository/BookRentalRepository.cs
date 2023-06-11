@@ -47,7 +47,7 @@ namespace BookRentalApp.Data.Repository
             p.BookId = bookRental.BookId;
 
             p.RentalDate = bookRental.RentalDate;
-            p.RentalTerm = bookRental.RentalTerm;
+            p.HowManyDaysToRent = bookRental.HowManyDaysToRent;
             p.ReturnDate = bookRental.ReturnDate;
 
             _context.SaveChanges();
@@ -101,7 +101,7 @@ namespace BookRentalApp.Data.Repository
             var overdueRentals = _context.BookRentals
                 .Include(x => x.Customer)
                 .Include(x => x.Book)
-                .Where(x => x.ReturnDate == null || x.ReturnDate < currentDate)
+                .Where(x => x.ReturnDate < currentDate)
                 .ToList();
 
             return overdueRentals;

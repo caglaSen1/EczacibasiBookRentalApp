@@ -11,8 +11,6 @@ namespace BookRentalApp.Business.Dto.BookRental
     {
         public int CustomerId { get; set; }
         public int BookId { get; set; }
-
-        public DateTime RentalDate { get; set; }
         public int RentalTerm { get; set; }
     }
 }
