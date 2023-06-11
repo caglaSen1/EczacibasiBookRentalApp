@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using BookRentalApp.Data.Interface;
 using BookRentalApp.Data.Repository;
 using BookRentalApp.Middleware;
+using BookRentalApp.Business;
 
 namespace BookRentalApp
 {
@@ -28,21 +29,13 @@ namespace BookRentalApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataLayer(Configuration);
+
+            services.AddBusinessLayer();
+
             services.AddControllersWithViews();
-            
-            services.AddDbContext<BookRentalAppDbContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
-                            b => b.MigrationsAssembly("BookRentalApp.Data")));
-            services.AddScoped<DbContext>(provider => provider.GetService<BookRentalAppDbContext>());
-
+                         
             services.AddAutoMapper(typeof(Startup));
-
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IBookRentalRepository, BookRentalRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

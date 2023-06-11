@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookRentalApp.Business\BookRentalApp.Business.csproj" />
-    <ProjectReference Include="..\BookRentalApp.Data\BookRentalApp.Data.csproj" />
   </ItemGroup>
 
 </Project>

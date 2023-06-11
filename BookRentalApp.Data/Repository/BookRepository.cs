@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BookRentalApp.Data.Repository
 {
@@ -26,31 +27,33 @@ namespace BookRentalApp.Data.Repository
 
         public void Delete(int id)
         {
-            var p = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var b = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
             
-            _context.Books.Remove(p);
+            _context.Books.Remove(b);
 
             _context.SaveChanges();
         }
 
         public Book Update(int id, Book book)
         {
-            var p = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var b = _context.Books.FirstOrDefault(x => x.Id == id);
+            if(b is null) return null;
             
-            p.Title = book.Title;
-            p.Author = book.Author;
-            p.Publisher = book.Publisher;
-            p.ISBN = book.ISBN;
-            p.Page = book.Page;
-            p.Price = book.Price;
-            p.IsAvailable = book.IsAvailable;
+            b.Title = book.Title;
+            b.Author = book.Author;
+            b.Publisher = book.Publisher;
+            b.ISBN = book.ISBN;
+            b.Page = book.Page;
+            b.Price = book.Price;
+            b.IsAvailable = book.IsAvailable;
 
-            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId) ?? throw new Exception("Category Not Found");
+            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
+            if(category is null) return null;
             
-            p.CategoryId = book.CategoryId;
+            b.CategoryId = book.CategoryId;
 
             _context.SaveChanges();
-            return p;
+            return b;
         }
 
         public List<Book> GetAll(int page, int pageSize)

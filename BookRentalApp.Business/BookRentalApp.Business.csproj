@@ -8,4 +8,12 @@
     <Folder Include="Interface\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookRentalApp.Data\BookRentalApp.Data.csproj" />
+  </ItemGroup>
+
 </Project>
