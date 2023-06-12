@@ -65,7 +65,7 @@ namespace BookRentalApp.Business
 
         public ServiceResult<GetBookByIdDto> GetById(int id, bool withCategory = false)
         {
-            var book = _repository.GetById(id);
+            var book = _repository.GetById(id, withCategory);
 
             if (book == null)
             {

@@ -16,7 +16,7 @@ namespace BookRentalApp.Data
             services.AddScoped<DbContext>(provider => provider.GetService<BookRentalAppDbContext>());
 
             services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IBookRentalRepository, BookRentalRepository>();
+            services.AddScoped<IRentedBookRepository, RentedBookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
 

@@ -30,10 +30,10 @@ namespace BookRentalApp.Models.Mapping
             CreateMap<GetCustomerByIdDto, Customer>().ReverseMap();
 
             //RentalBook
-            CreateMap<CreateBookRentalDto, BookRental>();
-            CreateMap<UpdateBookRentalDto, BookRental>();
-            CreateMap<GetAllBookRentalsDto, BookRental>().ReverseMap();
-            CreateMap<GetBookRentalByIdDto, BookRental>().ReverseMap();
+            CreateMap<CreateRentedBookDto, RentedBook>();
+            CreateMap<UpdateRentedBookDto, RentedBook>();
+            CreateMap<GetAllRentedBooksDto, RentedBook>().ReverseMap();
+            CreateMap<GetRentedBookByIdDto, RentedBook>().ReverseMap();
         }
     }
 }

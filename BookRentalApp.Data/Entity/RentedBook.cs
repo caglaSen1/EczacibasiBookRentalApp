@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BookRentalApp.Data.Entity
 {
     [Table("BookRentals")]
-    public class BookRental : BaseEntity<int>
-    {
-        
+    public class RentedBook : BaseEntity<int>
+    {        
         public Customer Customer { get; set; }
 
         [ForeignKey("CustomerId")]

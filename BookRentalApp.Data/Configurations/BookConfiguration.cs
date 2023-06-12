@@ -16,6 +16,7 @@ namespace BookRentalApp.Data.Configurations
             builder.Property(s => s.ISBN).IsRequired();
             builder.Property(s => s.CategoryId).IsRequired();
             builder.Property(s => s.Price).IsRequired().HasPrecision(10, 2).HasAnnotation("CheckConstraint", new[] { "Price > 0" }); ;
+            builder.Property(s => s.IsAvailable).IsRequired();
         }
     }
 }

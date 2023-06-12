@@ -18,6 +18,6 @@ namespace BookRentalApp.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<BookRental> BookRentals { get; set; }
+        public DbSet<RentedBook> BookRentals { get; set; }
     }
 }

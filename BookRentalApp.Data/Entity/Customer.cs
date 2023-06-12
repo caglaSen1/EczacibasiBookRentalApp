@@ -11,6 +11,6 @@ namespace BookRentalApp.Data.Entity
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public List<BookRental> RentedBooks { get; set; }
+        public List<RentedBook> RentedBooks { get; set; }
     }
 }

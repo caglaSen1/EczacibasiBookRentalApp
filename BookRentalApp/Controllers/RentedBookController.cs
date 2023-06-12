@@ -1,35 +1,34 @@
 ﻿using AutoMapper;
-using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Data.Entity;
-using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using BookRentalApp.Business.Dto.BookRental;
 using Microsoft.Extensions.Logging;
+using BookRentalApp.Business.Interface;
 
 namespace BookRentalApp.Controllers
 {
     [Route("bookRentals")]
-    public class BookRentalController : Controller
+    public class RentedBookController : Controller
     {
-        private readonly IBookRentalRepository _repository;
+        private readonly IRentedBookService _service;
         private readonly IMapper _mapper;
-        private readonly ILogger<BookRentalController> _logger;
+        private readonly ILogger<RentedBookController> _logger;
 
-        public BookRentalController(IBookRentalRepository repository, IMapper mapper, ILogger<BookRentalController> logger)
+        public RentedBookController(IRentedBookService service, IMapper mapper, ILogger<RentedBookController> logger)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
             _logger = logger;
         }
 
         [HttpPost]
-        public IActionResult Create(CreateBookRentalDto bookRentalDto)
+        public IActionResult Create(CreateRentedBookDto bookRentalDto)
         {
             try
             {
-                _repository.Add(_mapper.Map<BookRental>(bookRentalDto));
+                _service.Add(bookRentalDto);
                 return Ok();
             }
             catch (Exception ex)
@@ -44,8 +43,8 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var bookRentals = _repository.GetAll(page, pageSize);
-                var bookRentalDtos = _mapper.Map<List<GetAllBookRentalsDto>>(bookRentals);
+                var bookRentals = _service.GetAll(page, pageSize);
+                var bookRentalDtos = _mapper.Map<List<GetAllRentedBooksDto>>(bookRentals);
                 return Ok(bookRentalDtos);
             }
             catch (Exception ex)
@@ -55,13 +54,13 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpGet("{id}")] //books/2
+        [HttpGet("{id}")] 
         public IActionResult Get(int id, bool withCustomer = false, bool withBook = false)
         {
             try
             {
-                var bookRental = _repository.GetById(id, withCustomer, withBook) ?? throw new Exception("Not Found");
-                var bookRentalDto = _mapper.Map<GetBookRentalByIdDto>(bookRental);
+                var bookRental = _service.GetById(id, withCustomer, withBook) ?? throw new Exception("Not Found");
+                var bookRentalDto = _mapper.Map<GetRentedBookByIdDto>(bookRental);
                 return Ok(bookRental);
             }
             catch (Exception ex)
@@ -71,13 +70,13 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpPut("{id}")] //books/2
-        public IActionResult Update(int id, UpdateBookRentalDto bookRentalDto)
+        [HttpPut("{id}")] 
+        public IActionResult Update(int id, UpdateRentedBookDto bookRentalDto)
         {
             try
             {
-                var bookRental = _repository.Update(id, _mapper.Map<BookRental>(bookRentalDto));
-                return Ok(_mapper.Map<GetBookRentalByIdDto>(bookRental));
+                var bookRental = _service.Update(id, bookRentalDto);
+                return Ok(_mapper.Map<GetRentedBookByIdDto>(bookRental));
             }
             catch (Exception ex)
             {
