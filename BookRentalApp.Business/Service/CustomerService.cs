@@ -7,7 +7,7 @@ using BookRentalApp.Data.Interface;
 using System;
 using System.Collections.Generic;
 
-namespace BookRentalApp.Business
+namespace BookRentalApp.Business.Service
 {
     public class CustomerService : ICustomerService
     {
@@ -24,7 +24,7 @@ namespace BookRentalApp.Business
         {
             var customer = _mapper.Map<Customer>(customerDto);
 
-            if(customer == null)
+            if (customer == null)
             {
                 return ServiceResult<GetCustomerByIdDto>.Failed(null, "Failed to map customer", 400); // 400 - Bad Request)
             }

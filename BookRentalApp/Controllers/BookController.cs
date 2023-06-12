@@ -55,7 +55,7 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpGet("{id}")] //books/2
+        [HttpGet("{id}")] 
         public IActionResult GetById(int id, bool withCategory = false)
         {
             try
@@ -71,7 +71,7 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpPut("{id}")] //books/2
+        [HttpPut("{id}")] 
         public IActionResult Update(int id, UpdateBookDto bookDto)
         {
             try
@@ -85,5 +85,42 @@ namespace BookRentalApp.Controllers
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
             }
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var book = _serivce.GetById(id) ?? throw new Exception("Not Found");
+                _serivce.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the book with ID {BookId}: {ErrorMessage}", id, ex.Message);
+                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
+            }
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search(string title, string author, string publisher, string ISBN,
+        int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
+        {
+            try
+            {
+                var searchResult = _serivce.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable) ?? throw new Exception("Not Found");
+                var bookDtos = _mapper.Map<List<GetBookByIdDto>>(searchResult);
+                return Ok(bookDtos);
+               
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while searching books: {ErrorMessage}", ex.Message);
+                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
+            }
+        }
+
+
     }
 }

@@ -59,7 +59,7 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpGet("{id}")] //customers/2
+        [HttpGet("{id}")] 
         public IActionResult Get(int id)
         {
             try
@@ -75,7 +75,7 @@ namespace BookRentalApp.Controllers
             }
         }
 
-        [HttpPut("{id}")] //customer/2
+        [HttpPut("{id}")] 
         public IActionResult Update(int id, UpdateCustomerDto customerDto)
         {
             try
@@ -86,6 +86,22 @@ namespace BookRentalApp.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while updating customer with ID {CustomerId}: {ErrorMessage}", id, ex.Message);
+                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var customer = _service.GetById(id) ?? throw new Exception("Not Found");
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting customer with ID {CustomerId}: {ErrorMessage}", id, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
             }
         }

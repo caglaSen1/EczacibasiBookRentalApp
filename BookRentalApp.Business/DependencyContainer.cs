@@ -1,4 +1,5 @@
 ﻿using BookRentalApp.Business.Interface;
+using BookRentalApp.Business.Service;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookRentalApp.Business

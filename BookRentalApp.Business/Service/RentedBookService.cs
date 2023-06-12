@@ -4,9 +4,10 @@ using BookRentalApp.Business.Dto.BookRental;
 using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
+using System;
 using System.Collections.Generic;
 
-namespace BookRentalApp.Business
+namespace BookRentalApp.Business.Service
 {
     public class RentedBookService : IRentedBookService
     {
@@ -100,18 +101,18 @@ namespace BookRentalApp.Business
             return ServiceResult<GetRentedBookByIdDto>.Success(rentedBookDtoResult, "Rented book retrieved successfully");
         }
 
-        
+
         public ServiceResult<List<GetRentedBookByIdDto>> GetCurrentRentals()
         {
             var currentRentals = _repository.GetCurrentRentals();
 
-            if(currentRentals == null)
+            if (currentRentals == null)
             {
-                return ServiceResult <List<GetRentedBookByIdDto>>.Failed(null, "The currently rented books were not found", 404); //404 - Not Found
+                return ServiceResult<List<GetRentedBookByIdDto>>.Failed(null, "The currently rented books were not found", 404); //404 - Not Found
             }
 
-            var currentRentalsDtoResult = _mapper.Map< List<GetRentedBookByIdDto>>(currentRentals);
-            return ServiceResult <List<GetRentedBookByIdDto>>.Success(currentRentalsDtoResult, "The currently rented books retrieved successfully");
+            var currentRentalsDtoResult = _mapper.Map<List<GetRentedBookByIdDto>>(currentRentals);
+            return ServiceResult<List<GetRentedBookByIdDto>>.Success(currentRentalsDtoResult, "The currently rented books retrieved successfully");
         }
 
         public ServiceResult<List<GetRentedBookByIdDto>> GetPreviousRentals()
@@ -145,6 +146,19 @@ namespace BookRentalApp.Business
 
             var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(updatedRentedBook);
             return ServiceResult<GetRentedBookByIdDto>.Success(rentedBookDtoResult, "Rented book updated successfully");
+        }
+
+        public ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented)
+        {
+            var rentedBooks = _repository.Search(customerId, bookId, rentalDate, howManyDaysToRent, returnDate, isRented);
+
+            if (rentedBooks == null)
+            {
+                return ServiceResult<List<GetRentedBookByIdDto>>.Failed(null, "Failed to retrieve rented books", 500); //500 - Internal Server Error
+            }
+
+            var rentedBookDtosResult = _mapper.Map<List<GetRentedBookByIdDto>>(rentedBooks);
+            return ServiceResult<List<GetRentedBookByIdDto>>.Success(rentedBookDtosResult, "Rented books retrieved successfully");
         }
     }
 }

@@ -12,6 +12,6 @@
         public string Language { get; set; }
         public double Price { get; set; }
         public int CategoryId { get; set; }
-        public bool IsAvailable { get; }
+        public bool IsAvailable { get; set; }
     }
 }

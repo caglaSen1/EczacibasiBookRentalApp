@@ -12,7 +12,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<List<GetAllBooksDto>> GetAll(int page, int pageSize);
         ServiceResult<GetBookByIdDto> GetById(int id, bool withCategory = false);
         ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN,
-            int? categoryId, double? minPrice, string categoryName, bool isAvailable);
+            int? categoryId, double? minPrice, string categoryName, bool? isAvailable);
 
     }
 }

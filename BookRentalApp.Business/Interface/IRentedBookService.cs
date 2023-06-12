@@ -3,6 +3,7 @@ using BookRentalApp.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<GetRentedBookByIdDto> GetByBookId(int bookId);
         ServiceResult<List<GetRentedBookByIdDto>> GetPreviousRentals();
         ServiceResult<List<GetRentedBookByIdDto>> GetCurrentRentals();
+        ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented);
 
     }
 }

@@ -5,7 +5,7 @@ using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using System.Collections.Generic;
 
-namespace BookRentalApp.Business
+namespace BookRentalApp.Business.Service
 {
     public class CategoryService : ICategoryService
     {
@@ -37,7 +37,7 @@ namespace BookRentalApp.Business
         {
             var category = _repository.GetById(id);
 
-            if (category == null) 
+            if (category == null)
             {
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Category not found", 404); //404 - Not Found
             }
@@ -45,7 +45,7 @@ namespace BookRentalApp.Business
             var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(category);
             _repository.Delete(id);
             return ServiceResult<GetCategoryByIdDto>.Success(categoryDtoResult, "Category deleted successfully");
-            
+
         }
 
         public ServiceResult<List<GetAllCategoriesDto>> GetAll(int page, int pageSize)
@@ -79,14 +79,14 @@ namespace BookRentalApp.Business
         {
             var category = _repository.GetById(id);
 
-            if(category == null)
+            if (category == null)
             {
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Category not found", 404); //404 - Not Found
             }
 
             var updatedCategory = _repository.Update(id, _mapper.Map<Category>(categoryDto));
 
-            if(updatedCategory == null)
+            if (updatedCategory == null)
             {
                 return ServiceResult<GetCategoryByIdDto>.Failed(null, "Failed to update the category", 500); //500 - Internal Server Error
             }

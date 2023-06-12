@@ -86,5 +86,22 @@ namespace BookRentalApp.Controllers
             }
 
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var category = _service.GetById(id) ?? throw new Exception("Not Found");
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the category with ID {CategoryId}: {ErrorMessage}", id, ex.Message);
+                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
+            }
+        }
+
     }
 }

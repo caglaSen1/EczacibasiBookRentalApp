@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookRentalApp.Data.Entity;
+using System;
 namespace BookRentalApp.Business.Dto.BookRental
 {
     public class GetRentedBookByIdDto
@@ -11,3 +12,4 @@ namespace BookRentalApp.Business.Dto.BookRental
         public bool IsRented { get; set; }
     }
 }
+

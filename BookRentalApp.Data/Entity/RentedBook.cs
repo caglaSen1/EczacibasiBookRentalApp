@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookRentalApp.Data.Entity
 {
-    [Table("BookRentals")]
+    [Table("RentedBooks")]
     public class RentedBook : BaseEntity<int>
     {        
         public Customer Customer { get; set; }

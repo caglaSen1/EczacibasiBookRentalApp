@@ -71,7 +71,7 @@ namespace BookRentalApp.Data.Repository
         }
 
         public List<Book> Search(string title, string author, string publisher, string ISBN,
-            int? categoryId, double? minPrice, string categoryName, bool isAvailable)
+            int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
         {
             var query = _context.Books.AsQueryable();
 
@@ -96,8 +96,16 @@ namespace BookRentalApp.Data.Repository
             if (!string.IsNullOrWhiteSpace(categoryName))
                 query = query.Where(x => x.Category.Name == categoryName);
 
-            if (isAvailable)
-                query = query.Where(x => x.IsAvailable);
+            if (isAvailable.HasValue)
+                if(isAvailable == true)
+                {
+                    query = query.Where(x => x.IsAvailable == true);
+                }
+                else
+                {
+                    query = query.Where(x => x.IsAvailable == false);
+                }
+                
 
             return query.ToList();
         }

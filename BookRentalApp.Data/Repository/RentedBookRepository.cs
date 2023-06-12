@@ -19,22 +19,22 @@ namespace BookRentalApp.Data.Repository
 
         public void Add(RentedBook bookRental)
         {
-            _context.BookRentals.Add(bookRental);
+            _context.RentedBooks.Add(bookRental);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var b = _context.BookRentals.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var b = _context.RentedBooks.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
 
-            _context.BookRentals.Remove(b);
+            _context.RentedBooks.Remove(b);
 
             _context.SaveChanges();
         }
 
         public RentedBook Update(int id, RentedBook bookRental)
         {
-            var b = _context.BookRentals.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var b = _context.RentedBooks.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
 
             var customer = _context.Customers.FirstOrDefault(x => x.Id == bookRental.CustomerId) ?? throw new Exception("Customer Not Found");
 
@@ -54,12 +54,12 @@ namespace BookRentalApp.Data.Repository
 
         public List<RentedBook> GetAll(int page, int pageSize)
         {
-            return _context.BookRentals.Skip(page * pageSize).Take(pageSize).ToList();
+            return _context.RentedBooks.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         public RentedBook GetById(int id, bool withCustomer = false, bool withBook = false)
         {
-            var query = _context.BookRentals.AsQueryable();
+            var query = _context.RentedBooks.AsQueryable();
 
             if (withBook)
                 query = query.Include(x => x.Book);
@@ -74,7 +74,7 @@ namespace BookRentalApp.Data.Repository
 
         public RentedBook GetByBookId(int bookId)
         {
-            var query = _context.BookRentals.AsQueryable();
+            var query = _context.RentedBooks.AsQueryable();
             var bookRental = query.FirstOrDefault(x => x.BookId == bookId) ?? throw new Exception("Book rental Not Found");
 
             return bookRental;
@@ -82,7 +82,7 @@ namespace BookRentalApp.Data.Repository
 
         public RentedBook GetByCustomerId(int customerId)
         {
-            var query = _context.BookRentals.AsQueryable();
+            var query = _context.RentedBooks.AsQueryable();
             var bookRental = query.FirstOrDefault(x => x.CustomerId == customerId) ?? throw new Exception("Book rental Not Found");
 
             return bookRental;
@@ -93,7 +93,7 @@ namespace BookRentalApp.Data.Repository
         {
             var currentDate = DateTime.Now;
 
-            var overdueRentals = _context.BookRentals
+            var overdueRentals = _context.RentedBooks
                 .Include(x => x.Customer)
                 .Include(x => x.Book)
                 .Where(x => x.ReturnDate <= currentDate)
@@ -106,7 +106,7 @@ namespace BookRentalApp.Data.Repository
         {
             var currentDate = DateTime.Now;
 
-            var currentRentals = _context.BookRentals
+            var currentRentals = _context.RentedBooks
                 .Include(x => x.Customer)
                 .Include(x => x.Book)
                 .Where(x => x.ReturnDate > currentDate)
@@ -115,5 +115,37 @@ namespace BookRentalApp.Data.Repository
             return currentRentals;
         }
 
+        public List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented)
+        {
+            var query = _context.RentedBooks.AsQueryable();
+
+
+            if(customerId.HasValue)
+                query = query.Where(x => x.CustomerId == customerId);
+
+            if (bookId.HasValue)
+                query = query.Where(x => x.BookId == bookId);
+
+            if (rentalDate.HasValue)
+                query = query.Where(x => x.ReturnDate.Equals(rentalDate.Value));
+
+            if (howManyDaysToRent.HasValue)
+                query = query.Where(x => x.HowManyDaysToRent == howManyDaysToRent);
+
+            if (returnDate.HasValue)
+                query = query.Where(x => x.ReturnDate.Equals(returnDate.Value));
+
+            if (isRented.HasValue)
+                if(isRented == true)
+                {
+                    query = query.Where(x => x.IsRented == true);
+                }
+                else
+                {
+                    query = query.Where(x => x.IsRented == false);
+                }
+                    
+            return query.ToList();
+        }
     }
 }

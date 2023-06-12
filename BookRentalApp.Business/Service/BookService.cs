@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using BookRentalApp.Business.Dto.Book;
-using BookRentalApp.Business.Dto.Category;
 using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
-using System;
 using System.Collections.Generic;
 
-namespace BookRentalApp.Business
+namespace BookRentalApp.Business.Service
 {
     public class BookService : IBookService
     {
@@ -76,7 +74,7 @@ namespace BookRentalApp.Business
             return ServiceResult<GetBookByIdDto>.Success(bookDtoResult, "Book retrieved successfully");
         }
 
-        public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool isAvailable)
+        public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
         {
             var books = _repository.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable);
 

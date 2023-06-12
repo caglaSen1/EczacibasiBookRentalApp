@@ -1,4 +1,5 @@
 ﻿using BookRentalApp.Data.Entity;
+using System;
 using System.Collections.Generic;
 
 namespace BookRentalApp.Data.Interface
@@ -14,5 +15,6 @@ namespace BookRentalApp.Data.Interface
         RentedBook GetByBookId(int bookId);
         List<RentedBook> GetPreviousRentals();
         List<RentedBook> GetCurrentRentals();
+        List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented);
     }
 }
