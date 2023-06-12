@@ -29,7 +29,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                _serivce.Add(_mapper.Map<Book>(bookDto));
+                _serivce.Add(bookDto);
                 return Ok();
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet("{id}")] //books/2
-        public IActionResult Get(int id, bool withCategory = false)
+        public IActionResult GetById(int id, bool withCategory = false)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var book = _serivce.Update(id, _mapper.Map<Book>(bookDto));
+                var book = _serivce.Update(id, bookDto);
                 return Ok(_mapper.Map<GetBookByIdDto>(book));
             }
             catch (Exception ex)

@@ -19,7 +19,6 @@ namespace BookRentalApp.Data.Repository
         public void Add(Book book)
         {
             _context.Books.Add(book);
-
             _context.SaveChanges();
         }
 
@@ -34,8 +33,7 @@ namespace BookRentalApp.Data.Repository
 
         public Book Update(int id, Book book)
         {
-            var b = _context.Books.FirstOrDefault(x => x.Id == id);
-            if(b is null) return null;
+            var b = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Book Not Found");
             
             b.Title = book.Title;
             b.Author = book.Author;
@@ -43,11 +41,12 @@ namespace BookRentalApp.Data.Repository
             b.ISBN = book.ISBN;
             b.Page = book.Page;
             b.Price = book.Price;
-            b.IsAvailable = book.IsAvailable;
+            b.FirstEditionYear = book.FirstEditionYear;
+            b.Translator = book.Translator;
+            b.Language = book.Language;
 
-            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
-            if(category is null) return null;
-            
+            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId) ?? throw new Exception("Category Not Found");
+
             b.CategoryId = book.CategoryId;
 
             _context.SaveChanges();
@@ -64,23 +63,41 @@ namespace BookRentalApp.Data.Repository
             var query = _context.Books.AsQueryable();
 
             if (withCategory)
-                query.Include(x => x.Category);
+                query = query.Include(x => x.Category);
 
-            return query.FirstOrDefault(x => x.Id == id);
+            var book = query.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Book Not Found");
+
+            return book;
         }
 
-        public List<Book> Search(string title, int? categoryId, double? minPrice)
+        public List<Book> Search(string title, string author, string publisher, string ISBN,
+            int? categoryId, double? minPrice, string categoryName, bool isAvailable)
         {
             var query = _context.Books.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(title))
-                query.Where(x => x.Title.Contains(title));
+                query = query.Where(x => x.Title.Contains(title));
+
+            if (!string.IsNullOrWhiteSpace(author))
+                query = query.Where(x => x.Author.Contains(author));
+
+            if (!string.IsNullOrWhiteSpace(publisher))
+                query = query.Where(x => x.Publisher.Contains(publisher));
+
+            if (!string.IsNullOrWhiteSpace(ISBN))
+                query = query.Where(x => x.ISBN == ISBN);
 
             if (categoryId.HasValue)
-                query.Where(x => x.CategoryId == categoryId);
+                query = query.Where(x => x.CategoryId == categoryId);
 
             if (minPrice.HasValue)
-                query.Where(x => x.Price > minPrice);
+                query = query.Where(x => x.Price > minPrice);
+
+            if (!string.IsNullOrWhiteSpace(categoryName))
+                query = query.Where(x => x.Category.Name == categoryName);
+
+            if (isAvailable)
+                query = query.Where(x => x.IsAvailable);
 
             return query.ToList();
         }

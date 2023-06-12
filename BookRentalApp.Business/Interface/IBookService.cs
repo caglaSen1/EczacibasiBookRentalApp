@@ -6,11 +6,13 @@ namespace BookRentalApp.Business.Interface
 {
     public interface IBookService
     {
-        void Add(CreateBookDto book);
-        void Delete(int id);
-        ServiceResult<GetBookByIdDto> Update(int id, UpdateBookDto book);
-        List<GetBookByIdDto> Search(string title, int? categoryId, double? minPrice);
-        GetBookByIdDto GetById(int id, bool withCategory = false);
-        List<GetAllBooksDto> GetAll(int page, int pageSize);
+        ServiceResult<GetBookByIdDto> Add(CreateBookDto bookDto);
+        ServiceResult<GetBookByIdDto> Delete(int id);
+        ServiceResult<GetBookByIdDto> Update(int id, UpdateBookDto bookDto);
+        ServiceResult<List<GetAllBooksDto>> GetAll(int page, int pageSize);
+        ServiceResult<GetBookByIdDto> GetById(int id, bool withCategory = false);
+        ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN,
+            int? categoryId, double? minPrice, string categoryName, bool isAvailable);
+
     }
 }

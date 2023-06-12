@@ -19,7 +19,6 @@ namespace BookRentalApp.Data.Repository
         {
 
             _context.Categories.Add(category);
-
             _context.SaveChanges();
         }
 

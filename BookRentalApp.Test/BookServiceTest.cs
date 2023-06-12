@@ -55,7 +55,7 @@ namespace BookRentalApp.Test
             Assert.IsType<ServiceResult<GetBookByIdDto>>(response);
             Assert.True(response.IsSuccess);
             Assert.NotNull(response.Result);
-            Assert.Empty(response.ErrorMessage);
+            Assert.Empty(response.Message);
 
         }
 
@@ -89,7 +89,7 @@ namespace BookRentalApp.Test
             Assert.IsType<ServiceResult<GetBookByIdDto>>(response);
             Assert.False(response.IsSuccess);
             Assert.Null(response.Result);
-            Assert.NotEmpty(response.ErrorMessage);
+            Assert.NotEmpty(response.Message);
 
         }
 
@@ -126,7 +126,7 @@ namespace BookRentalApp.Test
             Assert.IsType<ServiceResult<GetBookByIdDto>>(response);
             Assert.False(response.IsSuccess);
             Assert.Null(response.Result);
-            Assert.NotEmpty(response.ErrorMessage);
+            Assert.NotEmpty(response.Message);
 
         }
 

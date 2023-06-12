@@ -1,25 +1,24 @@
 ﻿using AutoMapper;
-using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Data.Entity;
-using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using BookRentalApp.Business.Dto.Customer;
 using Microsoft.Extensions.Logging;
+using BookRentalApp.Business.Interface;
 
 namespace BookRentalApp.Controllers
 {
     [Route("customers")]
     public class CustomerController : Controller
     {
-        private readonly ICustomerRepository _repository;
+        private readonly ICustomerService _service;
         private readonly IMapper _mapper;
         private readonly ILogger<CustomerController> _logger;
 
-        public CustomerController(ICustomerRepository repository, IMapper mapper, ILogger<CustomerController> logger)
+        public CustomerController(ICustomerService service, IMapper mapper, ILogger<CustomerController> logger)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,7 +29,7 @@ namespace BookRentalApp.Controllers
             
             try
             {
-                _repository.Add(_mapper.Map<Customer>(customerDto));
+                _service.Add(customerDto);
                 return Ok();
 
             }
@@ -48,7 +47,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var customers = _repository.GetAll(page, pageSize);
+                var customers = _service.GetAll(page, pageSize);
                 var customerDtos = _mapper.Map<List<GetAllCustomersDto>>(customers);
                 return Ok(customerDtos);
 
@@ -65,7 +64,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var customer = _repository.GetById(id) ?? throw new Exception("Not Found");
+                var customer = _service.GetById(id) ?? throw new Exception("Not Found");
                 var customerDto = _mapper.Map<GetCustomerByIdDto>(customer);
                 return Ok(customerDto);
             }
@@ -81,7 +80,7 @@ namespace BookRentalApp.Controllers
         {
             try
             {
-                var customer = _repository.Update(id, _mapper.Map<Customer>(customerDto));
+                var customer = _service.Update(id, customerDto);
                 return Ok(_mapper.Map<GetCustomerByIdDto>(customer));
             }
             catch (Exception ex)
