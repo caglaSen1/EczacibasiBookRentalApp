@@ -27,80 +27,68 @@ namespace BookRentalApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateCategoryDto categoryDto)
         {
-            try
+            var result = _service.Add(categoryDto);
+
+            if(result.Success)
             {
-                _service.Add(categoryDto);
-                return Ok();
+                return CreatedAtAction(nameof(GetById), new {id = result.Result.Id}, result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while creating a category: {ErrorMessage}", ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            
+            return BadRequest(result.Message);
         }
 
         [HttpGet]
         public IActionResult GetAll(int page, int pageSize)
         {
-            try
+            var result = _service.GetAll(page, pageSize);
+
+            if (result.Success)
             {
-                var categories = _service.GetAll(page, pageSize);
-                var categoryDtos = _mapper.Map<List<GetAllCategoriesDto>>(categories);
-                return Ok(categoryDtos);
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving categories: {ErrorMessage}", ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return NotFound(result.Message);
+
         }
 
         [HttpGet("{id}")] 
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
-            try
+            var result = _service.GetById(id);
+
+            if (result.Success)
             {
-                var category = _service.GetById(id) ?? throw new Exception("Not Found");
-                var categoryDto = _mapper.Map<GetCategoryByIdDto>(category);
-                return Ok(categoryDto);
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving a category with ID {CategoryId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return NotFound(result.Message);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateCategoryDto categoryDto)
         {
-            try
+            var result = _service.Update(id, categoryDto);
+
+            if (result.Success)
             {
-                var category = _service.Update(id, categoryDto);
-                return Ok(_mapper.Map<GetCategoryByIdDto>(category));
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while updating the category with ID {CategoryId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return BadRequest(result.Message);
 
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try
+            var result = _service.Delete(id);
+
+            if (result.Success)
             {
-                var category = _service.GetById(id) ?? throw new Exception("Not Found");
-                _service.Delete(id);
-                return Ok();
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while deleting the category with ID {CategoryId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return NotFound(result.Message);
         }
 
     }

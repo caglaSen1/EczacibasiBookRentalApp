@@ -24,7 +24,7 @@ namespace BookRentalApp.Data.Repository
 
         public void Delete(int id)
         {
-            var p = _context.Categories.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var p = _context.Categories.FirstOrDefault(x => x.Id == id);
             
             _context.Categories.Remove(p);
 
@@ -33,7 +33,7 @@ namespace BookRentalApp.Data.Repository
 
         public Category Update(int id, Category category)
         {
-            var p = _context.Categories.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var p = _context.Categories.FirstOrDefault(x => x.Id == id);
 
             p.Name = category.Name;
             p.Description = category.Description;
@@ -49,7 +49,7 @@ namespace BookRentalApp.Data.Repository
 
         public Category GetById(int id)
         {
-            var p = _context.Categories.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var p = _context.Categories.FirstOrDefault(x => x.Id == id);
             return p;
         }
 

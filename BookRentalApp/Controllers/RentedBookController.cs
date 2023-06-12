@@ -27,7 +27,16 @@ namespace BookRentalApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateRentedBookDto rentedBookDto)
         {
-            try
+            var result = _service.Add(rentedBookDto);
+
+            if (result.Success)
+            {
+                return CreatedAtAction(nameof(GetById), new { id = result.Result.Id }, result.Result);
+            }
+
+            return BadRequest(result.Message);
+
+            /*try
             {
                 _service.Add(rentedBookDto);
                 return Ok();
@@ -36,45 +45,48 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while creating a rented book: {ErrorMessage}", ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
 
         [HttpGet]
         public IActionResult GetAll(int page, int pageSize)
         {
-            try
+            var result = _service.GetAll(page, pageSize);
+
+            if (result.Success)
             {
-                var rentedBooks = _service.GetAll(page, pageSize);
-                var rentedBookDtos = _mapper.Map<List<GetAllRentedBooksDto>>(rentedBooks);
-                return Ok(rentedBookDtos);
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving rented books: {ErrorMessage}", ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return NotFound(result.Message);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id, bool withCustomer = false, bool withBook = false)
         {
-            try
+            var result = _service.GetById(id, withCustomer, withBook);
+
+            if (result.Success)
             {
-                var rentedBook = _service.GetById(id, withCustomer, withBook) ?? throw new Exception("Not Found");
-                var rentedBookDto = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
-                return Ok(rentedBook);
+                return Ok(result.Result);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving a rented book with ID {Id}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+
+            return NotFound(result.Message);
         }
 
         [HttpGet("{customerId}")]
-        public IActionResult GetByCustomerId(int customerId)
+        public IActionResult GetByCustomerId(int id)
         {
-            try
+            var result = _service.GetByCustomerId(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+
+            /*try
             {
                 var rentedBook = _service.GetByCustomerId(customerId) ?? throw new Exception("Not Found");
                 var rentedBookDto = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
@@ -84,13 +96,22 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while retrieving a rented book with customer ID {Id}: {ErrorMessage}", customerId, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
 
         [HttpGet("{bookId}")]
-        public IActionResult GetByBookId(int bookId)
+        public IActionResult GetByBookId(int id)
         {
-            try
+            var result = _service.GetByBookId(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+
+            /*try
             {
                 var rentedBook = _service.GetByBookId(bookId) ?? throw new Exception("Not Found");
                 var rentedBookDto = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
@@ -100,13 +121,22 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while retrieving a rented book with book ID {Id}: {ErrorMessage}", bookId, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateRentedBookDto rentedBookDto)
         {
-            try
+            var result = _service.Update(id, rentedBookDto);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return BadRequest(result.Message);
+
+            /*try
             {
                 var rentedBook = _service.Update(id, rentedBookDto);
                 return Ok(_mapper.Map<GetRentedBookByIdDto>(rentedBook));
@@ -115,13 +145,21 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while updating the rented book with ID {BookRentalId}: {ErrorMessage}", id, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try
+            var result = _service.Delete(id);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+            /*try
             {
                 var rentedBook = _service.GetById(id) ?? throw new Exception("Not Found");
                 _service.Delete(id);
@@ -131,15 +169,24 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while deleting the rented book with ID {BookRentalId}: {ErrorMessage}", id, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
 
         [HttpGet("search")]
-        public IActionResult Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented)
+        public IActionResult Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate)
         {
-            try
+            var result = _service.Search(customerId, bookId, rentalDate, howManyDaysToRent, returnDate);
+
+            if (result.Success)
             {
-                var searchResult = _service.Search(customerId, bookId, rentalDate, howManyDaysToRent, returnDate, isRented) ?? throw new Exception("Not Found");
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+
+            /*try
+            {
+                var searchResult = _service.Search(customerId, bookId, rentalDate, howManyDaysToRent, returnDate) ?? throw new Exception("Not Found");
                 var rentedBookDtos = _mapper.Map<List<GetBookByIdDto>>(searchResult);
                 return Ok(rentedBookDtos);
 
@@ -149,7 +196,23 @@ namespace BookRentalApp.Controllers
             {
                 _logger.LogError(ex, "An error occurred while searching rented books: {ErrorMessage}", ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }
+            }*/
         }
+
+        [HttpPatch("deliverBook/{id}")]
+        public IActionResult DeliverBook(int id)
+        {
+            
+            var result = _service.DeliverBook(id);
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return BadRequest(result.Message);
+
+
+        }
+
     }
 }

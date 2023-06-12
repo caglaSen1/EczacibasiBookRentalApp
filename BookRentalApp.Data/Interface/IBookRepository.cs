@@ -12,5 +12,7 @@ namespace BookRentalApp.Data.Interface
             int? categoryId, double? minPrice, string categoryName, bool? isAvailable);
         Book GetById(int id, bool withCategory = false);
         List<Book> GetAll(int page, int pageSize);
+
+        Book SetAvailability(int id, bool availability);
     }
 }

@@ -19,46 +19,21 @@ namespace BookRentalApp.Data.Entity
         public DateTime RentalDate { get; set; } = DateTime.Today;
         public byte HowManyDaysToRent { get; set; }
 
-        private DateTime _returnDate;
+        public DateTime ReturnDate { get; set; }
 
-        public DateTime ReturnDate
+        private DateTime _mustReturnDate;
+
+        public DateTime MustReturnDate
         {
-            get => _returnDate;
+            get => _mustReturnDate;
             set
             {
-                _returnDate = RentalDate.AddDays(HowManyDaysToRent);
+                _mustReturnDate = RentalDate.AddDays(HowManyDaysToRent);
             }
         }
          
-        private bool _isRented;
-
-        public bool IsRented
-        {
-            get => _isRented;
-            set
-            {
-                if (DateTime.Now > ReturnDate)
-                {
-                    _isRented = true;
-                }
-                else if(DateTime.Now <= ReturnDate)
-                {
-                    _isRented = false;
-                }
-
-            }
-        }
-
+        
     }
 
-    public enum HowManyDaysToRent : byte
-    {
-        FiveDays = 5,
-        TenDays = 10,
-        FifteenDays = 15,
-        TwentyDays = 20,
-        TwentyFiveDays = 25,
-        ThirtyDays = 30
-
-    }
+    
 }

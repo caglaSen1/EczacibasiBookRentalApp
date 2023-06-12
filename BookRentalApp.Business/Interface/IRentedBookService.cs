@@ -16,11 +16,12 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<GetRentedBookByIdDto> Update(int id, UpdateRentedBookDto rentedBookDto);
         ServiceResult<GetRentedBookByIdDto> GetById(int id, bool withCustomer = false, bool withBook = false);
         ServiceResult<List<GetAllRentedBooksDto>> GetAll(int page, int pageSize);
-        ServiceResult<GetRentedBookByIdDto> GetByCustomerId(int customerId);
-        ServiceResult<GetRentedBookByIdDto> GetByBookId(int bookId);
+        ServiceResult<GetRentedBookByIdDto> GetByCustomerId(int id);
+        ServiceResult<GetRentedBookByIdDto> GetByBookId(int id);
         ServiceResult<List<GetRentedBookByIdDto>> GetPreviousRentals();
         ServiceResult<List<GetRentedBookByIdDto>> GetCurrentRentals();
-        ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented);
+        ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate);
+        ServiceResult<GetRentedBookByIdDto> DeliverBook(int id);
 
     }
 }

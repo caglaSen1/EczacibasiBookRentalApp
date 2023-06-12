@@ -9,6 +9,10 @@ namespace BookRentalApp.Business
         public static IServiceCollection AddBusinessLayer(this IServiceCollection services)
         {
             services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IRentedBookService, RentedBookService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+
             return services;
         }
     }

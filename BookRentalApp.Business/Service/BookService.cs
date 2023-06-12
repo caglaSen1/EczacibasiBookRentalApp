@@ -3,7 +3,9 @@ using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Net;
 
 namespace BookRentalApp.Business.Service
 {
@@ -11,11 +13,13 @@ namespace BookRentalApp.Business.Service
     {
         private readonly IBookRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BookService> _logger;
 
-        public BookService(IBookRepository repository, IMapper mapper)
+        public BookService(IBookRepository repository, IMapper mapper, ILogger<BookService> logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public ServiceResult<GetBookByIdDto> Add(CreateBookDto bookDto)
@@ -24,12 +28,13 @@ namespace BookRentalApp.Business.Service
 
             if (book == null)
             {
-                return ServiceResult<GetBookByIdDto>.Failed(null, "Failed to map book", 400); // 400 - Bad Request
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Failed to map book", (int)HttpStatusCode.BadRequest, _logger);
+                
             }
 
             _repository.Add(book);
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
-            return ServiceResult<GetBookByIdDto>.Success(bookDtoResult, "Book added successfully");
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book added successfully", (int)HttpStatusCode.Created);
         }
 
         public ServiceResult<GetBookByIdDto> Delete(int id)
@@ -38,12 +43,12 @@ namespace BookRentalApp.Business.Service
 
             if (book == null)
             {
-                return ServiceResult<GetBookByIdDto>.Failed(null, "Book not found", 404); //404 - Not Found
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
             _repository.Delete(id);
-            return ServiceResult<GetBookByIdDto>.Success(bookDtoResult, "Book deleted successfully");
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book deleted successfully", (int)HttpStatusCode.OK);
 
         }
 
@@ -53,11 +58,11 @@ namespace BookRentalApp.Business.Service
 
             if (books == null)
             {
-                return ServiceResult<List<GetAllBooksDto>>.Failed(null, "Failed to retrieve books", 500); //500 - Internal Server Error
+                return ServiceResultLogger.Failed<List<GetAllBooksDto>>(null, "Failed to retrieve books", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var bookDtosResult = _mapper.Map<List<GetAllBooksDto>>(books);
-            return ServiceResult<List<GetAllBooksDto>>.Success(bookDtosResult, "Books retrieved successfully");
+            return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Books retrieved successfully", (int)HttpStatusCode.OK);
 
         }
 
@@ -67,11 +72,11 @@ namespace BookRentalApp.Business.Service
 
             if (book == null)
             {
-                return ServiceResult<GetBookByIdDto>.Failed(null, "Book not found", 404); //404 - Not Found
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
-            return ServiceResult<GetBookByIdDto>.Success(bookDtoResult, "Book retrieved successfully");
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
         public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
@@ -80,13 +85,36 @@ namespace BookRentalApp.Business.Service
 
             if (books == null)
             {
-                return ServiceResult<List<GetBookByIdDto>>.Failed(null, "Failed to retrieve books", 500); //500 - Internal Server Error
+                return ServiceResultLogger.Failed<List<GetBookByIdDto>>(null, "Failed to retrieve books", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var bookDtosResult = _mapper.Map<List<GetBookByIdDto>>(books);
-            return ServiceResult<List<GetBookByIdDto>>.Success(bookDtosResult, "Books retrieved successfully");
+            return ServiceResult<List<GetBookByIdDto>>.Succeeded(bookDtosResult, "Books retrieved successfully", (int)HttpStatusCode.OK);
 
         }
+
+        public ServiceResult<GetBookByIdDto> SetAvailability(int id, bool availability)
+        {
+            var book = _repository.GetById(id);
+            if (book == null)
+            {
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Failed to retrieve book", (int)HttpStatusCode.NotFound, _logger); 
+
+            }
+
+            if (book.IsAvailable == availability)
+            {
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "The availability you want to change is the same", (int)HttpStatusCode.BadRequest, _logger); 
+            }
+
+            book.IsAvailable = availability;
+            
+            var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Availibility of book is changed", (int)HttpStatusCode.OK);
+
+        }
+
+       
 
         public ServiceResult<GetBookByIdDto> Update(int id, UpdateBookDto bookDto)
         {
@@ -94,18 +122,18 @@ namespace BookRentalApp.Business.Service
 
             if (book == null)
             {
-                return ServiceResult<GetBookByIdDto>.Failed(null, "Book not found", 404); //404 - Not Found
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var updatedBook = _repository.Update(id, _mapper.Map<Book>(bookDto));
 
             if (updatedBook == null)
             {
-                return ServiceResult<GetBookByIdDto>.Failed(null, "Failed to update the book", 500); //500 - Internal Server Error
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Failed to update the book", (int)HttpStatusCode.NotFound, _logger); 
             }
 
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(updatedBook);
-            return ServiceResult<GetBookByIdDto>.Success(bookDtoResult, "Book updated successfully");
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book updated successfully", (int)HttpStatusCode.OK);
         }
     }
 

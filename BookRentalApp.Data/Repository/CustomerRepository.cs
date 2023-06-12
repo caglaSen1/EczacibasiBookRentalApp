@@ -23,14 +23,14 @@ namespace BookRentalApp.Data.Repository
 
         public void Delete(int id)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");            
+            var p = _context.Customers.FirstOrDefault(x => x.Id == id);            
             _context.Customers.Remove(p);
             _context.SaveChanges();
         }
 
         public Customer Update(int id, Customer customer)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var p = _context.Customers.FirstOrDefault(x => x.Id == id);
 
             p.FirstName = customer.FirstName;
             p.LastName = customer.LastName;
@@ -48,7 +48,7 @@ namespace BookRentalApp.Data.Repository
 
         public Customer GetById(int id)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var p = _context.Customers.FirstOrDefault(x => x.Id == id);
             return p;
         }
     }

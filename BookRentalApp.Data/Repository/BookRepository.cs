@@ -24,7 +24,7 @@ namespace BookRentalApp.Data.Repository
 
         public void Delete(int id)
         {
-            var b = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Not Found");
+            var b = _context.Books.FirstOrDefault(x => x.Id == id);
             
             _context.Books.Remove(b);
 
@@ -33,7 +33,7 @@ namespace BookRentalApp.Data.Repository
 
         public Book Update(int id, Book book)
         {
-            var b = _context.Books.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Book Not Found");
+            var b = _context.Books.FirstOrDefault(x => x.Id == id);
             
             b.Title = book.Title;
             b.Author = book.Author;
@@ -45,7 +45,7 @@ namespace BookRentalApp.Data.Repository
             b.Translator = book.Translator;
             b.Language = book.Language;
 
-            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId) ?? throw new Exception("Category Not Found");
+            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
 
             b.CategoryId = book.CategoryId;
 
@@ -65,7 +65,7 @@ namespace BookRentalApp.Data.Repository
             if (withCategory)
                 query = query.Include(x => x.Category);
 
-            var book = query.FirstOrDefault(x => x.Id == id) ?? throw new Exception("Book Not Found");
+            var book = query.FirstOrDefault(x => x.Id == id);
 
             return book;
         }
@@ -110,5 +110,13 @@ namespace BookRentalApp.Data.Repository
             return query.ToList();
         }
 
+        public Book SetAvailability(int id, bool availability)
+        {
+            var book = _context.Books.FirstOrDefault(x => x.Id == id); 
+            book.IsAvailable = availability;
+            return book;
+        }
+
+        
     }
 }

@@ -11,10 +11,12 @@ namespace BookRentalApp.Data.Interface
         RentedBook Update(int id, RentedBook bookRental);
         RentedBook GetById(int id, bool withCustomer = false, bool withBook = false);
         List<RentedBook> GetAll(int page, int pageSize);
-        RentedBook GetByCustomerId(int customerId);
-        RentedBook GetByBookId(int bookId);
+        RentedBook GetByCustomerId(int id);
+        RentedBook GetByBookId(int id);
         List<RentedBook> GetPreviousRentals();
         List<RentedBook> GetCurrentRentals();
-        List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate, bool? isRented);
+        List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate);
+        RentedBook DeliverBook(int id);
+
     }
 }
