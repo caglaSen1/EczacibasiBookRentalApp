@@ -13,6 +13,9 @@
         public string Language { get; set; }
         public double Price { get; set; }
         public int CategoryId { get; set; }
+        public string CategoryName { get; set; } 
+        public string CategoryDescription { get; set; }
+
         public bool IsAvailable { get; set; }
     }
 }

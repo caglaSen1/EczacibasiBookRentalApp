@@ -9,11 +9,6 @@ namespace BookRentalApp.Data.Configurations
         {
             builder.Property(s => s.CustomerId).IsRequired();
             builder.Property(s => s.BookId).IsRequired();
-            builder.Property(s => s.RentalDate).IsRequired();
-            builder.Property(s => s.HowManyDaysToRent).IsRequired();
-            builder.Property(s => s.MustReturnDate).IsRequired();
-
-
         }
 
 

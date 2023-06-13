@@ -18,7 +18,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<List<GetAllRentedBooksDto>> GetAll(int page, int pageSize);
         ServiceResult<GetRentedBookByIdDto> GetByCustomerId(int id);
         ServiceResult<GetRentedBookByIdDto> GetByBookId(int id);
-        ServiceResult<List<GetRentedBookByIdDto>> GetPreviousRentals();
+        ServiceResult<List<GetRentedBookByIdDto>> GetOverdueRentals();
         ServiceResult<List<GetRentedBookByIdDto>> GetCurrentRentals();
         ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate);
         ServiceResult<GetRentedBookByIdDto> DeliverBook(int id);

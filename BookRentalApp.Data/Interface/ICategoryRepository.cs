@@ -5,10 +5,11 @@ namespace BookRentalApp.Data.Interface
 {
     public interface ICategoryRepository
     {
-        void Add(Category category);
-        void Delete(int id);
+        Category Add(Category category);
+        Category Delete(int id);
         Category Update(int id, Category category);
         List<Category> GetAll(int page, int pageSize);
-        Category GetById(int id);
+        Category GetById(int id, bool withBooks = false);
+        //List<Book> GetBooksOfCategory(int id);
     }
 }

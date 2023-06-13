@@ -4,13 +4,8 @@ namespace BookRentalApp.Business.Dto.BookRental
 {
     public class UpdateRentedBookDto
     {
-        [Required]
-        public int CustomerId { get; set; }
-
-        [Required]
-        public int BookId { get; set; }
-
-        [Required]
+        public int CustomerId { get; set; }               
+        public int BookId { get; set; }        
         public byte HowManyDaysToRent { get; set; }
 
     }

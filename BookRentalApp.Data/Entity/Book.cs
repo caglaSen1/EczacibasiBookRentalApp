@@ -29,7 +29,7 @@ namespace BookRentalApp.Data.Entity
             get => _price;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "The price must be greater than 0.");
                 }
@@ -38,31 +38,13 @@ namespace BookRentalApp.Data.Entity
             }
         }
 
+       
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        public RentedBook RentedBook { get; set; }
-
         public bool IsAvailable { get; set; } = true;
-
-        /*public bool IsAvailable
-        {
-            get => _isAvailable;
-            set
-            {
-                if (BookRental.IsRented == false)
-                {
-                    _isAvailable = true;
-                }
-                else
-                {
-                    _isAvailable = false;
-                }
-                    
-            }
-        }*/
-
+        
     }
 }

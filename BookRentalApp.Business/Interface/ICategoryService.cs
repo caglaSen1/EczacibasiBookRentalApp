@@ -9,7 +9,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<GetCategoryByIdDto> Delete(int id);
         ServiceResult<GetCategoryByIdDto> Update(int id, UpdateCategoryDto categoryDto);
         ServiceResult<List<GetAllCategoriesDto>> GetAll(int page, int pageSize);
-        ServiceResult<GetCategoryByIdDto> GetById(int id);
+        ServiceResult<GetCategoryByIdDto> GetById(int id, bool withBooks = false);
         
     }
 }

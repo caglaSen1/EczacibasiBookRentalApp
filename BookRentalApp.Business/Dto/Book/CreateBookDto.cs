@@ -13,16 +13,22 @@ namespace BookRentalApp.Business.Dto.Book
         [MaxLength(100)]
         public string Author { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string Publisher { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string Translator { get; set; }
 
         [Required]
+        [MaxLength(15)]
         public string ISBN { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Page must be a positive value.")]
         public int Page { get; set; }
+
+        [MaxLength(4)]
         public string FirstEditionYear { get; set; }
 
         public string Language { get; set; }

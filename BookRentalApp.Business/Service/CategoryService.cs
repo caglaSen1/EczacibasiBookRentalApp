@@ -52,7 +52,7 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<List<GetAllCategoriesDto>> GetAll(int page, int pageSize)
+        public ServiceResult<List<GetAllCategoriesDto>> GetAll(int page = 0, int pageSize = 5)
         {
             var categories = _repository.GetAll(page, pageSize);
 
@@ -66,9 +66,9 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<GetCategoryByIdDto> GetById(int id)
+        public ServiceResult<GetCategoryByIdDto> GetById(int id, bool withBooks = false)
         {
-            var category = _repository.GetById(id);
+            var category = _repository.GetById(id, withBooks);
 
             if (category == null)
             {

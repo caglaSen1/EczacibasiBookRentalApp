@@ -13,6 +13,11 @@ namespace BookRentalApp.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BookRentalAppDbContext).Assembly);
+            modelBuilder.Entity<RentedBook>()
+                .HasOne(rb => rb.Customer)
+                .WithMany(c => c.RentedBooks)
+                .HasForeignKey(rb => rb.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Book> Books { get; set; }

@@ -17,11 +17,15 @@ namespace BookRentalApp.Models.Mapping
             CreateMap<GetAllBooksDto, Book>().ReverseMap();
             CreateMap<GetBookByIdDto, Book>().ReverseMap();
 
+            CreateMap<Book, Book>().ForMember(dest => dest.Id, opt => opt.Ignore());
+
             //Category
             CreateMap<CreateCategoryDto, Category>();
             CreateMap<UpdateCategoryDto, Category>();
             CreateMap<GetAllCategoriesDto, Category>().ReverseMap();
             CreateMap<GetCategoryByIdDto, Category>().ReverseMap();
+
+            CreateMap<Category, Category>().ForMember(dest => dest.Id, opt => opt.Ignore());
 
             //Customer
             CreateMap<CreateCustomerDto, Customer>();
@@ -29,11 +33,17 @@ namespace BookRentalApp.Models.Mapping
             CreateMap<GetAllCustomersDto, Customer>().ReverseMap();
             CreateMap<GetCustomerByIdDto, Customer>().ReverseMap();
 
+            CreateMap<Customer, Customer>().ForMember(dest => dest.Id, opt => opt.Ignore());
+            //.ForAllMembers(opts => opts.Condition((src, dest, srcMember, destMember) => srcMember != null));
+
+
             //RentalBook
             CreateMap<CreateRentedBookDto, RentedBook>();
             CreateMap<UpdateRentedBookDto, RentedBook>();
             CreateMap<GetAllRentedBooksDto, RentedBook>().ReverseMap();
             CreateMap<GetRentedBookByIdDto, RentedBook>().ReverseMap();
+
+            CreateMap<RentedBook, RentedBook>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

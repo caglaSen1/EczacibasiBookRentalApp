@@ -4,58 +4,90 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace BookRentalApp.Data.Repository
 {
     public class BookRepository : IBookRepository
     {
         private readonly BookRentalAppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BookRepository(BookRentalAppDbContext context)
+        public BookRepository(BookRentalAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;   
         }
 
-        public void Add(Book book)
-        {
+        public Book Add(Book book)
+        {   
             _context.Books.Add(book);
             _context.SaveChanges();
+
+            var query = _context.Books.AsQueryable();
+            query = query.Include(x => x.Category);
+
+            return query.FirstOrDefault(x => x.Id == book.Id);
         }
 
-        public void Delete(int id)
+        public Book Delete(int id)
         {
-            var b = _context.Books.FirstOrDefault(x => x.Id == id);
-            
-            _context.Books.Remove(b);
+            var query = _context.Books.AsQueryable();
+            query = query.Include(x => x.Category);
 
+            var book = query.FirstOrDefault(x => x.Id == id);
+
+            _context.Books.Remove(book);
             _context.SaveChanges();
+            return book; 
         }
 
         public Book Update(int id, Book book)
         {
-            var b = _context.Books.FirstOrDefault(x => x.Id == id);
+            var updatedBook = _context.Books.FirstOrDefault(x => x.Id == id);
+            var tempBook = _mapper.Map<Book>(book);
+
+            if (!string.IsNullOrEmpty(book.Title))
+                updatedBook.Title = tempBook.Title;
+
+            if (!string.IsNullOrEmpty(book.Author))
+                updatedBook.Author = tempBook.Author;
+
+            if (!string.IsNullOrEmpty(book.Publisher))
+                updatedBook.Publisher = tempBook.Publisher;
+
+            if ((book.ISBN) != null)
+                updatedBook.ISBN = tempBook.ISBN;
             
-            b.Title = book.Title;
-            b.Author = book.Author;
-            b.Publisher = book.Publisher;
-            b.ISBN = book.ISBN;
-            b.Page = book.Page;
-            b.Price = book.Price;
-            b.FirstEditionYear = book.FirstEditionYear;
-            b.Translator = book.Translator;
-            b.Language = book.Language;
+            if (!string.IsNullOrEmpty(book.Language))
+                updatedBook.Language = tempBook.Language;
+         
+            if (!string.IsNullOrEmpty(book.Translator))
+                updatedBook.Translator = tempBook.Translator;
+           
+            if ((book.Price) != 0)
+                updatedBook.Price = tempBook.Price;
+            
+            if ((book.Page) != 0)
+                updatedBook.Page = tempBook.Page;
+           
+            if (!string.IsNullOrEmpty(book.FirstEditionYear))
+                updatedBook.FirstEditionYear = tempBook.FirstEditionYear;
 
-            var category = _context.Categories.FirstOrDefault(x => x.Id == book.CategoryId);
-
-            b.CategoryId = book.CategoryId;
-
+            if ((book.CategoryId) != 0)
+                updatedBook.CategoryId = tempBook.CategoryId;
+            
             _context.SaveChanges();
-            return b;
+            return updatedBook;
+
         }
 
-        public List<Book> GetAll(int page, int pageSize)
+        public List<Book> GetAll(int page = 0, int pageSize = 5)
         {
-            return _context.Books.Skip(page * pageSize).Take(pageSize).ToList();
+            var query = _context.Books.AsQueryable();
+            query = query.Include(x => x.Category);
+
+            return query.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         public Book GetById(int id, bool withCategory = false)
@@ -91,7 +123,7 @@ namespace BookRentalApp.Data.Repository
                 query = query.Where(x => x.CategoryId == categoryId);
 
             if (minPrice.HasValue)
-                query = query.Where(x => x.Price > minPrice);
+                query = query.Where(x => x.Price >= minPrice);
 
             if (!string.IsNullOrWhiteSpace(categoryName))
                 query = query.Where(x => x.Category.Name == categoryName);
@@ -106,7 +138,6 @@ namespace BookRentalApp.Data.Repository
                     query = query.Where(x => x.IsAvailable == false);
                 }
                 
-
             return query.ToList();
         }
 
@@ -117,6 +148,28 @@ namespace BookRentalApp.Data.Repository
             return book;
         }
 
-        
+        public Book GetByTitle(string title, bool withCategory = false)
+        {
+            var query = _context.Books.AsQueryable();
+
+            if (withCategory)
+                query = query.Include(x => x.Category);
+
+            var book = query.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower())); 
+
+            return book;
+        }
+
+        public Book GetByISBN(string ISBN, bool withCategory = false)
+        {
+            var query = _context.Books.AsQueryable();
+
+            if (withCategory)
+                query = query.Include(x => x.Category);
+
+            var book = query.FirstOrDefault(x => x.ISBN.ToLower().Equals(ISBN.ToLower()));
+
+            return book;
+        }
     }
 }

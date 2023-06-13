@@ -1,4 +1,5 @@
-﻿using BookRentalApp.Data.Entity;
+﻿using AutoMapper;
+using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,50 +13,72 @@ namespace BookRentalApp.Data.Repository
     public class RentedBookRepository : IRentedBookRepository
     {
         private readonly BookRentalAppDbContext _context;
+        private readonly IMapper _mapper; 
 
-        public RentedBookRepository(BookRentalAppDbContext context)
+        public RentedBookRepository(BookRentalAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public void Add(RentedBook rentedBook)
+        public RentedBook Add(RentedBook rentedBook)
         {
             _context.RentedBooks.Add(rentedBook);
             _context.SaveChanges();
+
+            var query = _context.RentedBooks.AsQueryable();
+            query = query.Include(x => x.Book);
+            query = query.Include(x => x.Customer);
+
+            return query.FirstOrDefault(x => x.Id == rentedBook.Id);
         }
 
-        public void Delete(int id)
+        public RentedBook Delete(int id)
         {
-            var b = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
+            var query = _context.RentedBooks.AsQueryable();
+            query = query.Include(x => x.Book);
+            query = query.Include(x => x.Customer);
 
-            _context.RentedBooks.Remove(b);
-
+            var rentedBook = query.FirstOrDefault(x => x.Id == id);
+            
+            _context.RentedBooks.Remove(rentedBook);
             _context.SaveChanges();
+
+            return rentedBook;
         }
 
         public RentedBook Update(int id, RentedBook rentedBook)
         {
-            var b = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
+            var updatedRentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
+            var tempRentedBook = _mapper.Map<RentedBook>(rentedBook);
 
-            var customer = _context.Customers.FirstOrDefault(x => x.Id == rentedBook.CustomerId);
+            //var customer = _context.Customers.FirstOrDefault(x => x.Id == rentedBook.CustomerId);
 
-            b.CustomerId = rentedBook.CustomerId;
+            //var book = _context.Books.FirstOrDefault(x => x.Id == rentedBook.BookId);
 
-            var book = _context.Books.FirstOrDefault(x => x.Id == rentedBook.BookId);
+            //var tempCustomer = _mapper.Map<Customer>(customer);
 
-            b.BookId = rentedBook.BookId;
 
-            b.RentalDate = rentedBook.RentalDate;
-            b.HowManyDaysToRent = rentedBook.HowManyDaysToRent;
-            b.MustReturnDate = rentedBook.MustReturnDate;
+            if ((rentedBook.HowManyDaysToRent) != 0)
+                updatedRentedBook.HowManyDaysToRent = tempRentedBook.HowManyDaysToRent;
+                        
+            if ((rentedBook.BookId) != 0)                
+                updatedRentedBook.BookId = tempRentedBook.BookId;
+
+            if ((rentedBook.CustomerId) != 0)
+                updatedRentedBook.CustomerId = tempRentedBook.CustomerId;
 
             _context.SaveChanges();
-            return b;
+            return updatedRentedBook;
         }
 
-        public List<RentedBook> GetAll(int page, int pageSize)
+        public List<RentedBook> GetAll(int page = 0, int pageSize = 5)
         {
-            return _context.RentedBooks.Skip(page * pageSize).Take(pageSize).ToList();
+            var query = _context.RentedBooks.AsQueryable();
+            query = query.Include(x => x.Book);
+            query = query.Include(x => x.Customer);
+
+            return query.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         public RentedBook GetById(int id, bool withCustomer = false, bool withBook = false)
@@ -64,7 +87,7 @@ namespace BookRentalApp.Data.Repository
 
             if (withBook)
                 query = query.Include(x => x.Book);
-
+                
             if (withCustomer)
                 query = query.Include(x => x.Customer);
 
@@ -76,6 +99,10 @@ namespace BookRentalApp.Data.Repository
         public RentedBook GetByBookId(int id)
         {
             var query = _context.RentedBooks.AsQueryable();
+
+            query = query.Include(x => x.Book);
+            query = query.Include(x => x.Customer);
+
             var rentedBook = query.FirstOrDefault(x => x.BookId == id);
 
             return rentedBook;
@@ -84,13 +111,17 @@ namespace BookRentalApp.Data.Repository
         public RentedBook GetByCustomerId(int id)
         {
             var query = _context.RentedBooks.AsQueryable();
+
+            query = query.Include(x => x.Book);
+            query = query.Include(x => x.Customer);
+
             var rentedBook = query.FirstOrDefault(x => x.CustomerId == id);
 
             return rentedBook;
         }
 
        
-        public List<RentedBook> GetPreviousRentals()
+        public List<RentedBook> GetOverdueRentals()
         {
             var currentDate = DateTime.Now;
 
@@ -135,8 +166,6 @@ namespace BookRentalApp.Data.Repository
 
             if (returnDate.HasValue)
                 query = query.Where(x => x.MustReturnDate.Equals(returnDate.Value));
-
-            
                     
             return query.ToList();
         }
@@ -147,8 +176,6 @@ namespace BookRentalApp.Data.Repository
             rentedBook.ReturnDate = DateTime.Now;
             _context.SaveChanges();
             return rentedBook;
-
-
         }
     }
 }

@@ -5,8 +5,6 @@ using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace BookRentalApp.Controllers
 {
@@ -38,7 +36,7 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int page, int pageSize)
+        public IActionResult GetAll(int page = 0, int pageSize = 5)
         {
             var result = _service.GetAll(page, pageSize);
 
@@ -52,9 +50,9 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet("{id}")] 
-        public IActionResult GetById(int id)
+        public IActionResult GetById(int id, bool withBooks = false)
         {
-            var result = _service.GetById(id);
+            var result = _service.GetById(id, withBooks);
 
             if (result.Success)
             {

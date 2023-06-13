@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Business.Interface;
-using BookRentalApp.Data.Entity;
-using BookRentalApp.Data.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace BookRentalApp.Controllers
 {
@@ -36,11 +32,10 @@ namespace BookRentalApp.Controllers
             }
 
             return BadRequest(result.Message);
-
         }
 
         [HttpGet]
-        public IActionResult GetAll(int page, int pageSize)
+        public IActionResult GetAll(int page = 0, int pageSize = 5)
         {
             var result = _service.GetAll(page, pageSize);
 
@@ -50,17 +45,7 @@ namespace BookRentalApp.Controllers
             }
 
             return NotFound(result.Message);
-            /*try
-            {
-                var books = _serivce.GetAll(page, pageSize);
-                var bookDtos = _mapper.Map<List<GetAllBooksDto>>(books);
-                return Ok(bookDtos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving books: {ErrorMessage}", ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }*/
+            
         }
 
         [HttpGet("{id}")] 
@@ -86,6 +71,34 @@ namespace BookRentalApp.Controllers
                 _logger.LogError(ex, "An error occurred while retrieving book with ID {BookId}: {ErrorMessage}", id, ex.Message);
                 return StatusCode(500, "An error occurred while processing the request. Please try again later.");
             }*/
+        }
+
+        [HttpGet("/title/{title}")]
+        public IActionResult GetByTitle(string title, bool withCategory = false)
+        {
+            var result = _service.GetByTitle(title, withCategory);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+
+        }
+
+        [HttpGet("/ISBN/{ISBN}")]
+        public IActionResult GetByISBN(string ISBN, bool withCategory = false)
+        {
+            var result = _service.GetByTitle(ISBN, withCategory);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+
         }
 
         [HttpPut("{id}")] 

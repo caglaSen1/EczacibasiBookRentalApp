@@ -10,7 +10,7 @@ using BookRentalApp.Business.Dto.Book;
 
 namespace BookRentalApp.Controllers
 {
-    [Route("bookRentals")]
+    [Route("rentedBooks")]
     public class RentedBookController : Controller
     {
         private readonly IRentedBookService _service;
@@ -49,7 +49,7 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int page, int pageSize)
+        public IActionResult GetAll(int page = 0, int pageSize = 5)
         {
             var result = _service.GetAll(page, pageSize);
 

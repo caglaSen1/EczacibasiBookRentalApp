@@ -4,7 +4,6 @@ namespace BookRentalApp.Business.Dto.Category
 {
     public class UpdateCategoryDto
     {
-        [Required]
         public string Name { get; set; }
 
         [MaxLength(300)]

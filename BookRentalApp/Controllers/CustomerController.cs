@@ -40,7 +40,7 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int page, int pageSize)
+        public IActionResult GetAll(int page = 0, int pageSize = 5)
         {
             var result = _service.GetAll(page, pageSize);
 

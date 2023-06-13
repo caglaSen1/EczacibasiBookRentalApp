@@ -14,7 +14,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN,
             int? categoryId, double? minPrice, string categoryName, bool? isAvailable);
         ServiceResult<GetBookByIdDto> SetAvailability(int id, bool availability);
-
-
+        ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false);
+        ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false);
     }
 }

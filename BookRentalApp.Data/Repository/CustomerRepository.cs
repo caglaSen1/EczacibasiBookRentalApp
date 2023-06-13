@@ -1,4 +1,5 @@
-﻿using BookRentalApp.Data.Entity;
+﻿using AutoMapper;
+using BookRentalApp.Data.Entity;
 using BookRentalApp.Data.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,47 +10,65 @@ namespace BookRentalApp.Data.Repository
     public class CustomerRepository : ICustomerRepository
     {
         private readonly BookRentalAppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CustomerRepository(BookRentalAppDbContext context)
+        public CustomerRepository(BookRentalAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public void Add(Customer customer)
+        public Customer Add(Customer customer)
         {
             _context.Customers.Add(customer);
             _context.SaveChanges();
+
+            return customer;
         }
 
-        public void Delete(int id)
+        public Customer Delete(int id)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id);            
-            _context.Customers.Remove(p);
+            var customer = _context.Customers.FirstOrDefault(x => x.Id == id); 
+            
+            _context.Customers.Remove(customer);
             _context.SaveChanges();
+            return customer;
         }
 
         public Customer Update(int id, Customer customer)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id);
+            var updatedCustomer = _context.Customers.FirstOrDefault(x => x.Id == id);
+            var tempCustomer = _mapper.Map<Customer>(customer);
 
-            p.FirstName = customer.FirstName;
-            p.LastName = customer.LastName;
-            p.Address = customer.Address;   
-            p.Phone =  customer.Phone;
-            p.Email = customer.Email;
+            if (!string.IsNullOrEmpty(customer.FirstName))
+                updatedCustomer.FirstName = tempCustomer.FirstName;
 
-            return p;
+            if(!string.IsNullOrEmpty(customer.LastName))
+                updatedCustomer.LastName = tempCustomer.LastName;
+
+            if (!string.IsNullOrEmpty(customer.Address))
+                updatedCustomer.Address = tempCustomer.Address;
+
+            if (!string.IsNullOrEmpty(customer.Email))
+                updatedCustomer.Email = tempCustomer.Email;
+
+            if (!string.IsNullOrEmpty(customer.Phone))
+                updatedCustomer.Phone = tempCustomer.Phone;
+
+            _context.SaveChanges();        
+            return updatedCustomer;
         }
+                
 
-        public List<Customer> GetAll(int page, int pageSize)
+        public List<Customer> GetAll(int page = 0, int pageSize = 5)
         {
             return _context.Customers.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         public Customer GetById(int id)
         {
-            var p = _context.Customers.FirstOrDefault(x => x.Id == id);
-            return p;
+            var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
+            return customer;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<List<GetAllCustomersDto>> GetAll(int page, int pageSize)
+        public ServiceResult<List<GetAllCustomersDto>> GetAll(int page = 0, int pageSize = 5)
         {
             var customers = _repository.GetAll(page, pageSize);
 

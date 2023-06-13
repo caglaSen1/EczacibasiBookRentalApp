@@ -14,16 +14,25 @@ namespace BookRentalApp.Business.Service
         private readonly IBookRepository _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<BookService> _logger;
+        private readonly ICategoryService _categoryService;
 
-        public BookService(IBookRepository repository, IMapper mapper, ILogger<BookService> logger)
+        public BookService(IBookRepository repository, IMapper mapper, ILogger<BookService> logger, ICategoryService categoryService)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _categoryService = categoryService;
         }
 
         public ServiceResult<GetBookByIdDto> Add(CreateBookDto bookDto)
         {
+            var category = _categoryService.GetById(bookDto.CategoryId).Result;
+
+            if (category == null)
+            {
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Category doesn't exist", (int)HttpStatusCode.NotFound, _logger);
+            }
+
             var book = _mapper.Map<Book>(bookDto);
 
             if (book == null)
@@ -31,7 +40,7 @@ namespace BookRentalApp.Business.Service
                 return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Failed to map book", (int)HttpStatusCode.BadRequest, _logger);
                 
             }
-
+            
             _repository.Add(book);
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book added successfully", (int)HttpStatusCode.Created);
@@ -52,7 +61,7 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<List<GetAllBooksDto>> GetAll(int page, int pageSize)
+        public ServiceResult<List<GetAllBooksDto>> GetAll(int page = 0, int pageSize = 5)
         {
             var books = _repository.GetAll(page, pageSize);
 
@@ -73,6 +82,32 @@ namespace BookRentalApp.Business.Service
             if (book == null)
             {
                 return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger); 
+            }
+
+            var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+        }
+
+        public ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false)
+        {
+            var book = _repository.GetByISBN(ISBN, withCategory);
+
+            if (book == null)
+            {
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
+            }
+
+            var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
+            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+        }
+
+        public ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false)
+        {
+            var book = _repository.GetByISBN(title, withCategory);
+
+            if (book == null)
+            {
+                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
             }
 
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
