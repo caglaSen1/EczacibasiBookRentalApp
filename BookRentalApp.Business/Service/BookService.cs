@@ -2,6 +2,7 @@
 using BookRentalApp.Business.Dto.Book;
 using BookRentalApp.Business.Interface;
 using BookRentalApp.Data.Entity;
+using BookRentalApp.Data.Enum;
 using BookRentalApp.Data.Interface;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book added successfully", (int)HttpStatusCode.Created);
         }
 
+        
         public ServiceResult<GetBookByIdDto> Delete(int id)
         {
             var book = _repository.GetById(id);
@@ -61,9 +63,9 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<List<GetAllBooksDto>> GetAll(int page = 0, int pageSize = 5)
+        public ServiceResult<List<GetAllBooksDto>> GetAll(int page = 0, int pageSize = 5, string sortBy = "Default")
         {
-            var books = _repository.GetAll(page, pageSize);
+            var books = _repository.GetAll(page, pageSize, SortByString(sortBy));
 
             if (books == null)
             {
@@ -74,7 +76,7 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Books retrieved successfully", (int)HttpStatusCode.OK);
 
         }
-
+       
         public ServiceResult<GetBookByIdDto> GetById(int id, bool withCategory = false)
         {
             var book = _repository.GetById(id, withCategory);
@@ -88,9 +90,9 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false)
+        public ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default")
         {
-            var book = _repository.GetByISBN(ISBN, withCategory);
+            var book = _repository.GetByISBN(ISBN, withCategory, SortByString(sortBy));
 
             if (book == null)
             {
@@ -101,9 +103,9 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false)
+        public ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false, string sortBy = "Default")
         {
-            var book = _repository.GetByISBN(title, withCategory);
+            var book = _repository.GetByISBN(title, withCategory, SortByString(sortBy));
 
             if (book == null)
             {
@@ -114,9 +116,9 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
+        public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool? isAvailable, string sortBy = "Default")
         {
-            var books = _repository.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable);
+            var books = _repository.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable, SortByString(sortBy));
 
             if (books == null)
             {
@@ -148,8 +150,7 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Availibility of book is changed", (int)HttpStatusCode.OK);
 
         }
-
-       
+             
 
         public ServiceResult<GetBookByIdDto> Update(int id, UpdateBookDto bookDto)
         {
@@ -170,6 +171,22 @@ namespace BookRentalApp.Business.Service
             var bookDtoResult = _mapper.Map<GetBookByIdDto>(updatedBook);
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book updated successfully", (int)HttpStatusCode.OK);
         }
+
+        public SortBy SortByString(string sortBy)
+        {
+            switch(sortBy.ToLower())
+            {
+                case "alphabetic":
+                    return SortBy.Alphabetic;
+                case "ascending":
+                    return SortBy.Ascending;
+                case "descanding":
+                    return SortBy.Descending;
+                default:
+                    return SortBy.Default;
+            }
+        }
+
     }
 
 }

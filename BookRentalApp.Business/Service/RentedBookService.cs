@@ -60,7 +60,7 @@ namespace BookRentalApp.Business.Service
             {
                 return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Book is not available", (int)HttpStatusCode.NotAcceptable, _logger); 
             }
-
+                        
             _bookService.SetAvailability(book.Id, false);
 
             _repository.Add(rentedBook);
@@ -98,6 +98,7 @@ namespace BookRentalApp.Business.Service
             }
 
             var rentedBookDtosResult = _mapper.Map<List<GetAllRentedBooksDto>>(rentedBooks);
+
             return ServiceResult<List<GetAllRentedBooksDto>>.Succeeded(rentedBookDtosResult, "Rented books retrieved successfully", (int)HttpStatusCode.OK);
         }
 
@@ -112,6 +113,10 @@ namespace BookRentalApp.Business.Service
             }
 
             var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
+            //rentedBookDtoResult.RentalDate = rentedBook.RentalDate.ToString("yyyy-MM-dd");
+            //rentedBookDtoResult.ReturnDate = rentedBook.ReturnDate.ToString("yyyy-MM-dd");
+            //rentedBookDtoResult.MustReturnDate = rentedBook.MustReturnDate.ToString("yyyy-MM-dd");
+
             return ServiceResult<GetRentedBookByIdDto>.Succeeded(rentedBookDtoResult, "Rented book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
@@ -231,5 +236,6 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetRentedBookByIdDto>.Succeeded(rentedBookDtoResult, "Rented book delivered successfully", (int)HttpStatusCode.OK);
 
         }
+        
     }
 }

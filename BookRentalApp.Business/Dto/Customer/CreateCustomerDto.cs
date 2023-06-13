@@ -17,7 +17,8 @@ namespace BookRentalApp.Business.Dto.Customer
         public string Address { get; set; }
 
         [Required]
-        [MaxLength(11)]
+        [MaxLength(11, ErrorMessage = "Phone must be at most 11 digit long")]
+        [MinLength(4, ErrorMessage = "Phone must be at least 11 digit long")]
         public string Phone { get; set; }
 
         [Required]

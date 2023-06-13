@@ -1,4 +1,5 @@
-﻿using BookRentalApp.Business.Dto.BookRental;
+﻿using BookRentalApp.Business.Dto.Book;
+using BookRentalApp.Business.Dto.BookRental;
 using BookRentalApp.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<List<GetRentedBookByIdDto>> GetCurrentRentals();
         ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate);
         ServiceResult<GetRentedBookByIdDto> DeliverBook(int id);
+        
 
     }
 }

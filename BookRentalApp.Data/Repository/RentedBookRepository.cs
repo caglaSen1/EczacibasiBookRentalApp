@@ -23,6 +23,7 @@ namespace BookRentalApp.Data.Repository
 
         public RentedBook Add(RentedBook rentedBook)
         {
+            SetMustReturnDate(rentedBook.Id, rentedBook.HowManyDaysToRent);
             _context.RentedBooks.Add(rentedBook);
             _context.SaveChanges();
 
@@ -52,16 +53,13 @@ namespace BookRentalApp.Data.Repository
             var updatedRentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
             var tempRentedBook = _mapper.Map<RentedBook>(rentedBook);
 
-            //var customer = _context.Customers.FirstOrDefault(x => x.Id == rentedBook.CustomerId);
-
-            //var book = _context.Books.FirstOrDefault(x => x.Id == rentedBook.BookId);
-
-            //var tempCustomer = _mapper.Map<Customer>(customer);
-
-
             if ((rentedBook.HowManyDaysToRent) != 0)
+            {
+                SetMustReturnDate(id, rentedBook.HowManyDaysToRent);
                 updatedRentedBook.HowManyDaysToRent = tempRentedBook.HowManyDaysToRent;
-                        
+                
+            }                
+
             if ((rentedBook.BookId) != 0)                
                 updatedRentedBook.BookId = tempRentedBook.BookId;
 
@@ -173,9 +171,24 @@ namespace BookRentalApp.Data.Repository
         public RentedBook DeliverBook(int id)
         {
             var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
-            rentedBook.ReturnDate = DateTime.Now;
+            SetReturnDate(id);
             _context.SaveChanges();
             return rentedBook;
+        }
+
+        public void SetMustReturnDate(int id, byte howManyDaysToRent)
+        {
+            var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
+            rentedBook.MustReturnDate = rentedBook.RentalDate.AddDays(howManyDaysToRent);
+            _context.SaveChanges();
+            
+        }
+
+        public void SetReturnDate(int id)
+        {
+            var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
+            rentedBook.ReturnDate = DateTime.Now;
+            _context.SaveChanges();
         }
     }
 }

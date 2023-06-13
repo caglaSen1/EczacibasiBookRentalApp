@@ -1,4 +1,5 @@
 ﻿using BookRentalApp.Data.Entity;
+using BookRentalApp.Data.Enum;
 using System.Collections.Generic;
 
 namespace BookRentalApp.Data.Interface
@@ -9,12 +10,11 @@ namespace BookRentalApp.Data.Interface
         Book Delete(int id);
         Book Update(int id, Book book);
         List<Book> Search(string title, string author, string publisher, string ISBN,
-            int? categoryId, double? minPrice, string categoryName, bool? isAvailable);
+            int? categoryId, double? minPrice, string categoryName, bool? isAvailable, SortBy sortBy = SortBy.Default);
         Book GetById(int id, bool withCategory = false);
-        List<Book> GetAll(int page, int pageSize);
-
+        List<Book> GetAll(int page, int pageSize, SortBy sortBy = SortBy.Default);
         Book SetAvailability(int id, bool availability);
-        Book GetByTitle(string title, bool withCategory = false);
-        Book GetByISBN(string ISBN, bool withCategory = false);
+        Book GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default);
+        Book GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default);
     }
 }

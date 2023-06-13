@@ -28,7 +28,8 @@ namespace BookRentalApp.Business.Dto.Book
         [Range(0, int.MaxValue, ErrorMessage = "Page must be a positive value.")]
         public int Page { get; set; }
 
-        [MaxLength(4)]
+        [MaxLength(4, ErrorMessage = "The year of the first edition should have a maximum of 4 digits")]
+        [MinLength(4, ErrorMessage = "The year of the first edition should have a minimum of 4 digits")]
         public string FirstEditionYear { get; set; }
 
         public string Language { get; set; }

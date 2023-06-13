@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using BookRentalApp.Data.Enum;
 
 namespace BookRentalApp.Data.Repository
 {
@@ -82,10 +83,25 @@ namespace BookRentalApp.Data.Repository
 
         }
 
-        public List<Book> GetAll(int page = 0, int pageSize = 5)
+        public List<Book> GetAll(int page = 0, int pageSize = 5, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
             query = query.Include(x => x.Category);
+
+            switch (sortBy)
+            {
+                case SortBy.Alphabetic:
+                    query = query.OrderBy(x => x.Title);
+                    break;
+                case SortBy.Ascending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                case SortBy.Descending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                default:
+                    break;
+            }
 
             return query.Skip(page * pageSize).Take(pageSize).ToList();
         }
@@ -103,7 +119,7 @@ namespace BookRentalApp.Data.Repository
         }
 
         public List<Book> Search(string title, string author, string publisher, string ISBN,
-            int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
+            int? categoryId, double? minPrice, string categoryName, bool? isAvailable, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
 
@@ -137,7 +153,22 @@ namespace BookRentalApp.Data.Repository
                 {
                     query = query.Where(x => x.IsAvailable == false);
                 }
-                
+
+            switch (sortBy)
+            {
+                case SortBy.Alphabetic:
+                    query = query.OrderBy(x => x.Title);
+                    break;
+                case SortBy.Ascending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                case SortBy.Descending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                default:
+                    break;
+            }
+
             return query.ToList();
         }
 
@@ -148,24 +179,54 @@ namespace BookRentalApp.Data.Repository
             return book;
         }
 
-        public Book GetByTitle(string title, bool withCategory = false)
+        public Book GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
 
             if (withCategory)
                 query = query.Include(x => x.Category);
+
+            switch (sortBy)
+            {
+                case SortBy.Alphabetic:
+                    query = query.OrderBy(x => x.Title);
+                    break;
+                case SortBy.Ascending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                case SortBy.Descending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                default:
+                    break;
+            }
 
             var book = query.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower())); 
 
             return book;
         }
 
-        public Book GetByISBN(string ISBN, bool withCategory = false)
+        public Book GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
 
             if (withCategory)
                 query = query.Include(x => x.Category);
+
+            switch (sortBy)
+            {
+                case SortBy.Alphabetic:
+                    query = query.OrderBy(x => x.Title);
+                    break;
+                case SortBy.Ascending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                case SortBy.Descending:
+                    query = query.OrderBy(x => x.Price);
+                    break;
+                default:
+                    break;
+            }
 
             var book = query.FirstOrDefault(x => x.ISBN.ToLower().Equals(ISBN.ToLower()));
 

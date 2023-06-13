@@ -35,9 +35,9 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int page = 0, int pageSize = 5)
+        public IActionResult GetAll(int page = 0, int pageSize = 5, string sortBy = "Default")
         {
-            var result = _service.GetAll(page, pageSize);
+            var result = _service.GetAll(page, pageSize, sortBy);
 
             if (result.Success)
             {
@@ -74,9 +74,9 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet("/title/{title}")]
-        public IActionResult GetByTitle(string title, bool withCategory = false)
+        public IActionResult GetByTitle(string title, bool withCategory = false, string sortBy = "Default")
         {
-            var result = _service.GetByTitle(title, withCategory);
+            var result = _service.GetByTitle(title, withCategory, sortBy);
 
             if (result.Success)
             {
@@ -88,9 +88,9 @@ namespace BookRentalApp.Controllers
         }
 
         [HttpGet("/ISBN/{ISBN}")]
-        public IActionResult GetByISBN(string ISBN, bool withCategory = false)
+        public IActionResult GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default")
         {
-            var result = _service.GetByTitle(ISBN, withCategory);
+            var result = _service.GetByTitle(ISBN, withCategory, sortBy);
 
             if (result.Success)
             {
@@ -152,9 +152,9 @@ namespace BookRentalApp.Controllers
 
         [HttpGet("search")]
         public IActionResult Search(string title, string author, string publisher, string ISBN,
-        int? categoryId, double? minPrice, string categoryName, bool? isAvailable)
+        int? categoryId, double? minPrice, string categoryName, bool? isAvailable, string sortBy = "Default")
         {
-            var result = _service.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable);
+            var result = _service.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable, sortBy);
 
             if (result.Success)
             {

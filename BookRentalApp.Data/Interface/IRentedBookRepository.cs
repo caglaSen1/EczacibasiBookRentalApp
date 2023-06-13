@@ -17,6 +17,8 @@ namespace BookRentalApp.Data.Interface
         List<RentedBook> GetCurrentRentals();
         List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate);
         RentedBook DeliverBook(int id);
+        void SetMustReturnDate(int id, byte howManyDaysToRent);
+        void SetReturnDate(int id);
 
     }
 }
