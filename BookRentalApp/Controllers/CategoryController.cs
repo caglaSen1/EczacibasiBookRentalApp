@@ -62,6 +62,19 @@ namespace BookRentalApp.Controllers
             return NotFound(result.Message);
         }
 
+        [HttpGet("/name/{name}")]
+        public IActionResult GetByName(string name, bool withBooks = false)
+        {
+            var result = _service.GetByName(name, withBooks);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateCategoryDto categoryDto)
         {

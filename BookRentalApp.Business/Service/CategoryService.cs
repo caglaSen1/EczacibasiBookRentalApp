@@ -24,6 +24,11 @@ namespace BookRentalApp.Business.Service
 
         public ServiceResult<GetCategoryByIdDto> Add(CreateCategoryDto categoryDto)
         {
+            if(GetByName(categoryDto.Name) != null)
+            {
+                return ServiceResultLogger.Failed<GetCategoryByIdDto>(null, "Failed to add category - Category name must be unique", (int)HttpStatusCode.BadRequest, _logger);
+            }
+
             var category = _mapper.Map<Category>(categoryDto);
 
             if (category == null)
@@ -79,8 +84,26 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetCategoryByIdDto>.Succeeded(categoryDtoResult, "Category retrieved successfully", (int)HttpStatusCode.OK);
         }
 
+        public ServiceResult<GetCategoryByIdDto> GetByName(string name, bool withBooks = false)
+        {
+            var category = _repository.GetByName(name, withBooks);
+
+            if (category == null)
+            {
+                return ServiceResultLogger.Failed<GetCategoryByIdDto>(null, "Category not found", (int)HttpStatusCode.NotFound, _logger);
+            }
+
+            var categoryDtoResult = _mapper.Map<GetCategoryByIdDto>(category);
+            return ServiceResult<GetCategoryByIdDto>.Succeeded(categoryDtoResult, "Category retrieved successfully", (int)HttpStatusCode.OK);
+        }
+
         public ServiceResult<GetCategoryByIdDto> Update(int id, UpdateCategoryDto categoryDto)
         {
+            if (GetByName(categoryDto.Name) != null)
+            {
+                return ServiceResultLogger.Failed<GetCategoryByIdDto>(null, "Failed to update - There is a category with that name", (int)HttpStatusCode.BadRequest, _logger);
+            }
+
             var category = _repository.GetById(id);
 
             if (category == null)

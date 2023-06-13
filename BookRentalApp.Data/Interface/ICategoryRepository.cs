@@ -10,6 +10,6 @@ namespace BookRentalApp.Data.Interface
         Category Update(int id, Category category);
         List<Category> GetAll(int page, int pageSize);
         Category GetById(int id, bool withBooks = false);
-        //List<Book> GetBooksOfCategory(int id);
+        Category GetByName(string name, bool withBooks = false);
     }
 }

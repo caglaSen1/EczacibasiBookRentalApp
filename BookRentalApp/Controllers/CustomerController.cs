@@ -65,6 +65,32 @@ namespace BookRentalApp.Controllers
             return NotFound(result.Message);
         }
 
+        [HttpGet("/email/{email}")]
+        public IActionResult GetById(string email)
+        {
+            var result = _service.GetByEmail(email);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+        }
+
+        [HttpGet("/phone/{phone}")]
+        public IActionResult GetByPhone(string phone)
+        {
+            var result = _service.GetByPhone(phone);
+
+            if (result.Success)
+            {
+                return Ok(result.Result);
+            }
+
+            return NotFound(result.Message);
+        }
+
         [HttpPut("{id}")] 
         public IActionResult Update(int id, UpdateCustomerDto customerDto)
         {

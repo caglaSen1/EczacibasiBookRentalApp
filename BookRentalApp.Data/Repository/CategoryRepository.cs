@@ -68,14 +68,17 @@ namespace BookRentalApp.Data.Repository
 
         }
 
-       /* public List<Book> GetBooksOfCategory(int id)  //booklar categorinin booklist ekleniyo mu bak
+        public Category GetByName(string name, bool withBooks = false)
         {
             var query = _context.Categories.AsQueryable();
-            query = query.Include(x => x.BookList);
 
-            var category = query.FirstOrDefault(x => x.Id == id);
+            if (withBooks)
+                query = query.Include(x => x.BookList);
 
-            return category.BookList;
-        }*/
+
+            var category = query.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
+
+            return category;
+        }        
     }
 }

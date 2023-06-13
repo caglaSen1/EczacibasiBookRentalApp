@@ -70,5 +70,23 @@ namespace BookRentalApp.Data.Repository
             var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
             return customer;
         }
+
+        public Customer GetByFirstName(string firstName)
+        {
+            var customer = _context.Customers.FirstOrDefault(x => x.FirstName.ToLower().Equals(firstName.ToLower()));
+            return customer;
+        }
+
+        public Customer GetByPhone(string phone)
+        {
+            var customer = _context.Customers.FirstOrDefault(x => x.Phone.ToLower().Equals(phone.ToLower()));
+            return customer;
+        }
+
+        public Customer GetByEmail(string email)
+        {
+            var customer = _context.Customers.FirstOrDefault(x => x.Email.ToLower().Equals(email.ToLower()));
+            return customer;
+        }
     }
 }
