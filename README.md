@@ -184,3 +184,39 @@ It does not take parameters. Returns books that are currently available for to t
 
 ![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2017.png)
 
+## Customer - swagger images
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%201.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%202.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%203.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%204.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%205.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%206.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%207.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%208.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%209.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2010.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2011.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2012.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2013.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2014.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2015.png)
+
+![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2016.png)
+
