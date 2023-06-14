@@ -124,6 +124,7 @@ It does not take parameters. Returns books that are currently available for to t
 ![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/4c8d2a49-650a-47e1-bc59-cc0e81be42d2)
 ![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/897638ee-a8f2-4769-9da6-a6f5aa44106f)
 
+
 ## Category - some swagger images
 
 ![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled.png)
@@ -145,6 +146,7 @@ It does not take parameters. Returns books that are currently available for to t
 ![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%208.png)
 
 ![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%209.png)
+
 
 ## Book - swagger images
 
@@ -184,6 +186,7 @@ It does not take parameters. Returns books that are currently available for to t
 
 ![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2017.png)
 
+
 ## Customer - swagger images
 
 ![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled.png)
@@ -219,4 +222,39 @@ It does not take parameters. Returns books that are currently available for to t
 ![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2015.png)
 
 ![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2016.png)
+
+
+## Rented Book - swagger images
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%201.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%202.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%203.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%204.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%205.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%206.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%207.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%208.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%209.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2010.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2011.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2012.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2013.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2014.png)
+
+![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2015.png)
 
