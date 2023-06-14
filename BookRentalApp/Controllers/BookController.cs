@@ -59,18 +59,6 @@ namespace BookRentalApp.Controllers
             }
 
             return NotFound(result.Message);
-
-            /*try
-            {
-                var book = _serivce.GetById(id, withCategory) ?? throw new Exception("Not Found");
-                var bookDto = _mapper.Map<GetBookByIdDto>(book);
-                return Ok(bookDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving book with ID {BookId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }*/
         }
 
         [HttpGet("/title/{title}")]
@@ -112,17 +100,6 @@ namespace BookRentalApp.Controllers
             }
 
             return BadRequest(result.Message);
-
-            /*try
-            {
-                var book = _serivce.Update(id, bookDto);
-                return Ok(_mapper.Map<GetBookByIdDto>(book));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while updating the book with ID {BookId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }*/
         }
 
         [HttpDelete("{id}")]
@@ -136,18 +113,6 @@ namespace BookRentalApp.Controllers
             }
 
             return NotFound(result.Message);
-
-            /*try
-            {
-                var book = _serivce.GetById(id) ?? throw new Exception("Not Found");
-                _serivce.Delete(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while deleting the book with ID {BookId}: {ErrorMessage}", id, ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }*/
         }
 
         [HttpGet("search")]
@@ -162,20 +127,6 @@ namespace BookRentalApp.Controllers
             }
 
             return NotFound(result.Message);
-
-            /*try
-            {
-                var searchResult = _serivce.Search(title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable) ?? throw new Exception("Not Found");
-                var bookDtos = _mapper.Map<List<GetBookByIdDto>>(searchResult);
-                return Ok(bookDtos);
-               
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while searching books: {ErrorMessage}", ex.Message);
-                return StatusCode(500, "An error occurred while processing the request. Please try again later.");
-            }*/
         }
 
 

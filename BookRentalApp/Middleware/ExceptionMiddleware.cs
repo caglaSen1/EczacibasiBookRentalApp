@@ -30,7 +30,6 @@ namespace BookRentalApp.Middleware
 
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                //  code : "500", "message": "hata", url:""
 
                 var result = Newtonsoft.Json.JsonConvert.SerializeObject(new { code = (int)HttpStatusCode.InternalServerError, 
                     message = "Error Occurred", url = httpContext.Request.Path.Value });

@@ -34,7 +34,6 @@ namespace BookRentalApp.Models.Mapping
             CreateMap<GetCustomerByIdDto, Customer>().ReverseMap();
 
             CreateMap<Customer, Customer>().ForMember(dest => dest.Id, opt => opt.Ignore());
-            //.ForAllMembers(opts => opts.Condition((src, dest, srcMember, destMember) => srcMember != null));
 
 
             //RentalBook
