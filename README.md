@@ -1,260 +1,409 @@
-# **Book Rental**
+# Book Rental API
 
-This project is a book rental project written in .Net. 
-
+### This project is a book rental API written in .NET. 
 Books, categories of books and customers can be added to the system. Customers can rent more than one book until a certain date. Since the books they rent are unavailable, others cannot rent them from the system. Books that customers have rented but have not yet delivered and books that have been delivered are kept in the system within rentedBooks table.
+
+
 ## Category
 
-- Post/categories
+### POST /categories
 
-It takes Name(required) and Description parameters. Category name is unique and no new category can be created with the same name.
+Adds a new category to the system.
 
-- Get / categories
+- Request parameters:
+  - Name (required): The name of the category (must be unique).
+  - Description: The description of the category.
 
-Returns all categories. By entering page and pageSize values, it can be set how many categories will be on a page and on which page the categories will be displayed.
+### GET /categories
 
-- DELETE / categories
+Retrieves all categories.
 
-Deletes the category given the id parameter. Returns the deleted category. Returns an error if the category given id is already deleted.
+- Request parameters:
+  - page: The page number for pagination.
+  - pageSize: The number of categories per page.
 
-- GET /name/{name}
+### DELETE /categories/{id}
 
-takes name(required) and withBooks(boolean) parameters. It takes the name of the category and shows the information of the category with that name. If withBooks is true, it also lists the books belonging to that category.
+Deletes the category with the specified ID.
 
-- PUT /categories/{id}
+- Request parameters:
+  - id: The ID of the category to delete.
 
-Updates the name and description of the category whose id is given. If the newly entered category name already exists, it does not update and returns error.
+### GET /categories/name/{name}
+
+Retrieves the information of the category with the specified name.
+
+- Request parameters:
+  - name (required): The name of the category.
+  - withBooks: Specifies whether to include the books belonging to the category.
+
+### PUT /categories/{id}
+
+Updates the name and description of the category with the specified ID. If the newly entered category name already exists, it does not update and returns error.
+
+- Request parameters:
+  - id: The ID of the category to update.
+  - Name: The new name for the category.
+  - Description: The new description for the category.
 
 ## Book
 
-- POST /books
+### POST /books
 
-Takes parameters: Title(required), Author(required), Publisher(required), Translator(required), ISBN(required), Page, FirstEditionYear, Language, Price(required), CategoryId(required). It checks the parameters in case they are not entered correctly. For example, price and page cannot be negative. Adds the book and returns the added book.
+Adds a new book to the system.
 
-- GET /books
+- Request parameters:
+  - Title (required): The title of the book.
+  - Author (required): The author of the book.
+  - Publisher (required): The publisher of the book.
+  - Translator (required): The translator of the book.
+  - ISBN (required): The ISBN of the book.
+  - Page: The number of pages in the book.
+  - FirstEditionYear: The year of the first edition of the book.
+  - Language: The language of the book.
+  - Price (required): The price of the book.
+  - CategoryId (required): The ID of the category to which the book belongs.
 
-Returns all books. page and pageSize values can be set to set how many books are on a page and which page to display. sortBy parameter can be set to alphabetic, ascending or descending to sort the books in the desired order. (It is case sensitive and it is default if nothing is typed)
+### GET /books
 
-- GET /books/{id}
+Retrieves all books.
 
-Returns the book whose id value is entered. WithCategory option, it is determined whether the category information of the returned book will be included or not.
+- Request parameters:
+  - page: The page number for pagination.
+  - pageSize: The number of books per page.
+  - sortBy: Sorts the books in the desired order (alphabetic, ascending, or descending).
 
-- DELETE /books/{id}
+### GET /books/{id}
 
-Deletes the book given id parameter. Returns the deleted book. Returns an error if the book given id is already deleted.
+Retrieves the book with the specified ID.
 
-- GET /title/{title}
+- Request parameters:
+  - id: The ID of the book to retrieve.
+  - withCategory: Specifies whether to include the category information of the book.
 
-Returns the book given the title value. The desired output can be obtained withCategory and sortBy options.
+### DELETE /books/{id}
 
-- GET /ISBN/{ISBN}
+Deletes the book with the specified ID.
 
-Returns the book given the ISBN value. WithCategory and sortBy options, the desired output can be obtained.
+- Request parameters:
+  - id: The ID of the book to delete.
 
-- GET /books/search
+### GET /books/title/{title}
 
-title, author, publisher, ISBN, categoryId, minPrice, categoryName, isAvailable, sortBy parameters are entered to search for books.
+Retrieves the book with the specified title.
 
-If isAvailable is not selected, all the books with and without a customer are instantly retrieved.
+- Request parameters:
+  - title: The title of the book.
+  - withCategory: Specifies whether to include the category information of the book.
+  - sortBy: Sorts the books in the desired order (alphabetic, ascending, or descending).
 
-- PUT/ books/{id}
+### GET /books/ISBN/{ISBN}
 
-Title, Author, Publisher, Translator, ISBN, Page, FirstEditionYear, Language, Price, CategoryId. id allows to update other properties of the given book. 
+Retrieves the book with the specified ISBN.
 
-If the id value is entered incorrectly, it gives a book not found error.
+- Request parameters:
+  - ISBN: The ISBN of the book.
+  - withCategory: Specifies whether to include the category information of the book.
+  - sortBy: Sorts the books in the desired order (alphabetic, ascending, or descending).
+
+### GET /books/search
+
+Searches for books based on various criteria.
+
+- Request parameters:
+  - title: The title of the book.
+  - author: The author of the book.
+  - publisher: The publisher of the book.
+  - ISBN: The ISBN of the book.
+  - categoryId: The ID of the category to which the book belongs.
+  - minPrice: The minimum price of the book.
+  - categoryName: The name of the category to which the book belongs.
+  - isAvailable: Specifies whether to retrieve only available books.
+  - sortBy: Sorts the books in the desired order (alphabetic, ascending, or descending).
+
+### PUT /books/{id}
+
+Updates the properties of the book with the specified ID.
+
+- Request parameters:
+  - id: The ID of the book to update.
+  - Title: The new title of the book.
+  - Author: The new author of the book.
+  - Publisher: The new publisher of the book.
+  - Translator: The new translator of the book.
+  - ISBN: The new ISBN of the book.
+  - Page: The new number of pages in the book.
+  - FirstEditionYear: The new year of the first edition of the book.
+  - Language: The new language of the book.
+  - Price: The new price of the book.
+  - CategoryId: The new ID of the category to which the book belongs.
 
 ## Customer
 
-- POST /customers
+### POST /customers
 
-Takes parameters FirstName(required), LastName(required), Address, Phone(required) and Email(required). Checks the parameters in case they are not entered correctly. Returns the added customer. Phone and Email are unique and returns error if another customer's phone or email is entered.
+Adds a new customer to the system.
 
-- GET /books
+- Request parameters:
+  - FirstName (required): The first name of the customer.
+  - LastName (required): The last name of the customer.
+  - Address: The address of the customer.
+  - Phone (required): The phone number of the customer (must be unique).
+  - Email (required): The email address of the customer (must be unique).
 
-Returns all customers. page and pageSize values can be set to set how many customers will be on a page and which customers will be shown on which page.
+### GET /customers
 
-- GET /customers/{id}
+Retrieves all customers.
 
-Returns the customer given the id value. If the id value is entered incorrectly, it returns a customer not found error.
+- Request parameters:
+  - page: The page number for pagination.
+  - pageSize: The number of customers per page.
 
-- DELETE /books/{id}
+### GET /customers/{id}
 
-Deletes the customer given id parameter. Returns the deleted customer. Returns an error if the book with id is already deleted.
+Retrieves the customer with the specified ID.
 
-- GET /email{email}
+- Request parameters:
+  - id: The ID of the customer to retrieve.
 
-Returns the customer given the email value. If the email is entered incorrectly or if there is no customer to which it belongs, a Not Found error is returned.
+### DELETE /customers/{id}
 
-- GET /phone{phone}
+Deletes the customer with the specified ID.
 
-Returns the customer given the phone value. If phone is entered incorrectly or there is no customer it belongs to, a Not Found error is returned.
+- Request parameters:
+  - id: The ID of the customer to delete.
+
+### GET /customers/email/{email}
+
+Retrieves the customer with the specified email address. If the email is entered incorrectly or if there is no customer to which it belongs, a Not Found error is returned.
+
+- Request parameters:
+  - email: The email address of the customer.
+
+### GET /customers/phone/{phone}
+
+Retrieves the customer with the specified phone number. If phone is entered incorrectly or there is no customer it belongs to, a Not Found error is returned.
+
+- Request parameters:
+  - phone: The phone number of the customer.
 
 ## Rented Book
 
-- POST /rentedBooks
+### POST /rentedBooks
 
-Takes CustomerId, BookId and HowManyDaysToRent parameters. Adds the customer and the book to rent. Returns error if the book is rented by another customer. Returns error if the given CustomerId or BookId is incorrect. 
+Rents a book to a customer.
+The date on which the book must be returned is automatically assigned
 
-- GET /rentedBooks
+- Request parameters:
+  - CustomerId: The ID of the customer who is renting the book.
+  - BookId: The ID of the book to be rented.
+  - HowManyDaysToRent: The number of days the book will be rented for.
 
-Returns all rented books. page and pageSize can be set to set how many on a page and on which page the rented books will be displayed.
+### GET /rentedBooks
 
-- DELETE /rentedBooks/{id}
+Retrieves all rented books.
 
-Deletes the rented book given id parameter. Returns the rented book it deleted. Returns an error if the rented book with id has already been deleted.
+- Request parameters:
+  - page: The page number for pagination.
+  - pageSize: The number of rented books per page.
 
-- GET /rentedBooks/search
+### DELETE /rentedBooks/{id}
 
-returns the appropriate rented books taking customerId, bookId and howManyDaysToRent parameters.
+Deletes the rented book with the specified ID.
 
-- PATCH /rentedBooks/deliverereBook/{id}
+- Request parameters:
+  - id: The ID of the rented book to delete.
 
-When a book rented by a customer is returned, it generates the return date of the rented book (the rented book is still in rentedBooks table) and makes the book available for pickup by other customers.
+### GET /rentedBooks/search
 
-- GET /getCurrentRentals
+Searches for rented books based on various criteria.
 
-It takes no parameters. Returns books that are not currently available for collection, that is, books belonging to a customer.
+- Request parameters:
+  - customerId: The ID of the customer who rented the book.
+  - bookId: The ID of the rented book.
+  - howManyDaysToRent: The number of days the book is rented for.
 
-- GET /getOverdueRentals
+### PATCH /rentedBooks/delivererBook/{id}
+returnDate is set when the rented book is delivered, the book becomes available 
+Marks a rented book as returned (giving the ReturnDate), making book available for other customers to rent.
 
-It does not take parameters. Returns books that are currently available for to take, i.e. books that have been returned by a customer.
+- Request parameters:
+  - id: The ID of the rented book.
 
-![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/a06c3e84-28b8-44cc-be63-4f219865c202)
-![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/02edf273-81c6-46ef-99fc-327675605bcc)
-![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/4c8d2a49-650a-47e1-bc59-cc0e81be42d2)
-![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/897638ee-a8f2-4769-9da6-a6f5aa44106f)
+### GET /getCurrentRentals
 
+Retrieves the books that are currently rented and not available for rental.
 
-## Category - some swagger images
+### GET /getOverdueRentals
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled.png)
+Retrieves the books that have been returned by customers and are currently available for rental.
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%201.png)
+# Images
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%202.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%203.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%201.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%204.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%202.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%205.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%203.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%206.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%207.png)
+## Category - Some swagger images 
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%208.png)
 
-![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%209.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%204.png)
 
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%205.png)
 
-## Book - some swagger images
+###  If we enter a category name that already exists it returns error:
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%206.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%201.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%207.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%202.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%208.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%203.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%209.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%204.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%205.png)
+### If withBooks selected true, it also returns the books belonging to the category:
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%206.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2012.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%207.png)
+## Book - Some swagger images 
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%208.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2013.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%209.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2014.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2010.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2015.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2011.png)
+### sortBy; if alphabetical is selected, it brings all books with names in alphabetical order, if ascending or descending is selected, it brings all books with price is ascending or descending, if nothing is entered, books come by default:
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2012.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2016.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2013.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2017.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2014.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2018.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2015.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2019.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2016.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2020.png)
 
-![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2017.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2021.png)
 
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2022.png)
 
-## Customer - some swagger images
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2023.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2024.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%201.png)
+### If the id value of the non-existent book is given, the update does not occur:
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%202.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2025.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%203.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2026.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%204.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2027.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%205.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2028.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%206.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2029.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%207.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2030.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%208.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2031.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%209.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2032.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2010.png)
+## Customer - Some swagger images 
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2011.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2033.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2012.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2034.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2013.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2035.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2014.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2036.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2015.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2037.png)
 
-![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2016.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2038.png)
 
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2039.png)
 
-## Rented Book - some swagger images
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2040.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2041.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%201.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2042.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%202.png)
+### If the id value of the non-existent customer is given, the deletion does not occur. Returns Not Found error:
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%203.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2043.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%204.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2044.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%205.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2045.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%206.png)
+### When updating the category name/email, it checks if there is another category with that name/email. If there is, it does not update and returns error:
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%207.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2010.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%208.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2011.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%209.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2010.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2046.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2011.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2047.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2012.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2048.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2013.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2049.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2014.png)
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2050.png)
 
-![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled%2015.png)
+## RentedBook - Some swagger images 
 
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2051.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2052.png)
+
+### If you want to rent a book to a customer who is not available (the book is currently with another customer), "Book is not available" error is returned:
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2053.png)
+
+### Books return with isAvailable property:
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2054.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2055.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2056.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2057.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2058.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2059.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2060.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2061.png)
+
+### When the book is delivered, the returnDate value is created and isAvailable becomes true:
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2062.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2063.png)
+
+### Returns books that are momentarily with a customer:
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2064.png)
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2065.png)
+
+### Returns books that used to be rented but are now available:
+
+![Untitled](Untitled%20274f7fe955814bee8d28b5e4ca59e349/Untitled%2066.png)
