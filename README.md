@@ -118,3 +118,11 @@ It takes no parameters. Returns books that are not currently available for colle
 - GET /getOverdueRentals
 
 It does not take parameters. Returns books that are currently available for to take, i.e. books that have been returned by a customer.
+
+![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/a06c3e84-28b8-44cc-be63-4f219865c202)
+![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/02edf273-81c6-46ef-99fc-327675605bcc)
+![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/4c8d2a49-650a-47e1-bc59-cc0e81be42d2)
+![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/897638ee-a8f2-4769-9da6-a6f5aa44106f)
+
+
+
