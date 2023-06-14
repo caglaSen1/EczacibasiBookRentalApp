@@ -148,7 +148,7 @@ It does not take parameters. Returns books that are currently available for to t
 ![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%209.png)
 
 
-## Book - swagger images
+## Book - some swagger images
 
 ![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled.png)
 
@@ -187,7 +187,7 @@ It does not take parameters. Returns books that are currently available for to t
 ![Untitled](Book%20-%20swagger%20images%20683f2701c413463e8dbfbc09900a2a1c/Untitled%2017.png)
 
 
-## Customer - swagger images
+## Customer - some swagger images
 
 ![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled.png)
 
@@ -224,7 +224,7 @@ It does not take parameters. Returns books that are currently available for to t
 ![Untitled](Customer%20-%20swagger%20images%20df78fed1cae34121aba4d0e6268180fa/Untitled%2016.png)
 
 
-## Rented Book - swagger images
+## Rented Book - some swagger images
 
 ![Untitled](Rented%20Book%20-%20swagger%20images%20168e132481444584b8af373170f2a774/Untitled.png)
 
