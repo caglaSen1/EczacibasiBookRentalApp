@@ -124,5 +124,25 @@ It does not take parameters. Returns books that are currently available for to t
 ![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/4c8d2a49-650a-47e1-bc59-cc0e81be42d2)
 ![image](https://github.com/caglaSen1/EczacibasiBookRentalApp/assets/75044298/897638ee-a8f2-4769-9da6-a6f5aa44106f)
 
+## Category - some swagger images
 
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%201.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%202.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%203.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%204.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%205.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%206.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%207.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%208.png)
+
+![Untitled](Category%20-%20swagger%20images%209ebaec2c047d4589ade5e3f7044eccdb/Untitled%209.png)
 
