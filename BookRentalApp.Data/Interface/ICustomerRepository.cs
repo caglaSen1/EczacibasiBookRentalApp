@@ -10,7 +10,7 @@ namespace BookRentalApp.Data.Interface
         Customer Update(int id, Customer customer);
         List<Customer> GetAll(int page, int pageSize);
         Customer GetById(int id);
-        Customer GetByFirstName(string firstName);
+        List<Customer> GetByFirstName(string firstName);
         Customer GetByPhone(string phone);
         Customer GetByEmail(string email);
     }

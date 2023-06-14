@@ -13,11 +13,13 @@ namespace BookRentalApp.Data.Repository
     {
         private readonly BookRentalAppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public BookRepository(BookRentalAppDbContext context, IMapper mapper)
+        public BookRepository(BookRentalAppDbContext context, IMapper mapper, ICategoryRepository categoryRepository)
         {
             _context = context;
             _mapper = mapper;   
+            _categoryRepository = categoryRepository;
         }
 
         public Book Add(Book book)
@@ -75,9 +77,13 @@ namespace BookRentalApp.Data.Repository
             if (!string.IsNullOrEmpty(book.FirstEditionYear))
                 updatedBook.FirstEditionYear = tempBook.FirstEditionYear;
 
+                        
             if ((book.CategoryId) != 0)
-                updatedBook.CategoryId = tempBook.CategoryId;
-            
+            {
+                var category = _categoryRepository.GetById(book.CategoryId);
+                if(category != null)
+                    updatedBook.CategoryId = tempBook.CategoryId;
+            }                            
             _context.SaveChanges();
             return updatedBook;
 
@@ -179,7 +185,7 @@ namespace BookRentalApp.Data.Repository
             return book;
         }
 
-        public Book GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default)
+        public List<Book> GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
 
@@ -201,12 +207,12 @@ namespace BookRentalApp.Data.Repository
                     break;
             }
 
-            var book = query.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower())); 
+            query = query.Where(x => x.Title.ToLower().Equals(title.ToLower()));
 
-            return book;
+            return query.ToList();
         }
 
-        public Book GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default)
+        public List<Book> GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default)
         {
             var query = _context.Books.AsQueryable();
 
@@ -228,9 +234,9 @@ namespace BookRentalApp.Data.Repository
                     break;
             }
 
-            var book = query.FirstOrDefault(x => x.ISBN.ToLower().Equals(ISBN.ToLower()));
+            query = query.Where(x => x.ISBN.ToLower().Equals(ISBN.ToLower()));
 
-            return book;
+            return query.ToList();
         }
     }
 }

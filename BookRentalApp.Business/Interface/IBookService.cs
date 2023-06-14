@@ -15,8 +15,8 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN,
             int? categoryId, double? minPrice, string categoryName, bool? isAvailable, string sortBy = "Default");
         ServiceResult<GetBookByIdDto> SetAvailability(int id, bool availability);
-        ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false, string sortBy = "Default");
-        ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default");
+        ServiceResult<List<GetAllBooksDto>> GetByTitle(string title, bool withCategory = false, string sortBy = "Default");
+        ServiceResult<List<GetAllBooksDto>> GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default");
         SortBy SortByString(string sortBy);
     }
 }

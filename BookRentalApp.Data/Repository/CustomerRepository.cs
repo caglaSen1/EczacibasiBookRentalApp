@@ -4,6 +4,9 @@ using BookRentalApp.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Xml.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BookRentalApp.Data.Repository
 {
@@ -22,7 +25,6 @@ namespace BookRentalApp.Data.Repository
         {
             _context.Customers.Add(customer);
             _context.SaveChanges();
-
             return customer;
         }
 
@@ -67,26 +69,42 @@ namespace BookRentalApp.Data.Repository
 
         public Customer GetById(int id)
         {
-            var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
+            var query = _context.Customers.AsQueryable();
+            var customer = query.FirstOrDefault(x => x.Id == id);
             return customer;
         }
 
-        public Customer GetByFirstName(string firstName)
+        public List<Customer> GetByFirstName(string firstName)
         {
-            var customer = _context.Customers.FirstOrDefault(x => x.FirstName.ToLower().Equals(firstName.ToLower()));
-            return customer;
+            var query = _context.Customers.AsQueryable();
+            
+            query = query.Where(x => x.FirstName == firstName);
+
+            return query.ToList();
         }
 
         public Customer GetByPhone(string phone)
         {
-            var customer = _context.Customers.FirstOrDefault(x => x.Phone.ToLower().Equals(phone.ToLower()));
-            return customer;
+            var query = _context.Customers.AsQueryable();
+            if (phone != null)
+            {
+                var category = query.FirstOrDefault(x => x.Phone.ToLower().Equals(phone.ToLower()));
+                return category;
+
+            }
+            return query.FirstOrDefault(x => x.Phone == phone);
         }
 
         public Customer GetByEmail(string email)
         {
-            var customer = _context.Customers.FirstOrDefault(x => x.Email.ToLower().Equals(email.ToLower()));
-            return customer;
+            var query = _context.Customers.AsQueryable();
+            if (email != null)
+            {
+                var category = query.FirstOrDefault(x => x.Email.ToLower().Equals(email.ToLower()));
+                return category;
+
+            }
+            return query.FirstOrDefault(x => x.Email == email);
         }
     }
 }

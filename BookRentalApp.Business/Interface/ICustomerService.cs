@@ -14,7 +14,7 @@ namespace BookRentalApp.Business.Interface
         ServiceResult<GetCustomerByIdDto> Update(int id, UpdateCustomerDto customerDto);
         ServiceResult<List<GetAllCustomersDto>> GetAll(int page, int pageSize);
         ServiceResult<GetCustomerByIdDto> GetById(int id);
-        ServiceResult<GetCustomerByIdDto> GetByFirstName(string firstName);
+        ServiceResult<List<GetAllCustomersDto>> GetByFirstName(string firstName);
         ServiceResult<GetCustomerByIdDto> GetByPhone(string phone);
         ServiceResult<GetCustomerByIdDto> GetByEmail(string email);
 

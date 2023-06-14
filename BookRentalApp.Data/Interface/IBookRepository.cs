@@ -14,7 +14,7 @@ namespace BookRentalApp.Data.Interface
         Book GetById(int id, bool withCategory = false);
         List<Book> GetAll(int page, int pageSize, SortBy sortBy = SortBy.Default);
         Book SetAvailability(int id, bool availability);
-        Book GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default);
-        Book GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default);
+        List<Book> GetByTitle(string title, bool withCategory = false, SortBy sortBy = SortBy.Default);
+        List<Book> GetByISBN(string ISBN, bool withCategory = false, SortBy sortBy = SortBy.Default);
     }
 }

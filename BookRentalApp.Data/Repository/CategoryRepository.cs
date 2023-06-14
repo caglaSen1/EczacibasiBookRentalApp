@@ -61,9 +61,7 @@ namespace BookRentalApp.Data.Repository
             if (withBooks)
                 query = query.Include(x => x.BookList);
             
-
             var category = query.FirstOrDefault(x => x.Id == id);
-
             return category;
 
         }
@@ -75,10 +73,14 @@ namespace BookRentalApp.Data.Repository
             if (withBooks)
                 query = query.Include(x => x.BookList);
 
+            if(name != null)
+            {
+                var category = query.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
+                return category;
 
-            var category = query.FirstOrDefault(x => x.Name.ToLower().Equals(name.ToLower()));
+            }                
+            return query.FirstOrDefault(x => x.Name == name);
 
-            return category;
         }        
     }
 }

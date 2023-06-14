@@ -24,18 +24,15 @@ namespace BookRentalApp.Business.Service
             _logger = logger;
         }
 
+
         public ServiceResult<GetCustomerByIdDto> Add(CreateCustomerDto customerDto)
         {
 
-            if((GetByEmail(customerDto.Email) != null))
+            if(_repository.GetByEmail(customerDto.Email) != null)
             {
                 return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to add customer - Email must be unique", (int)HttpStatusCode.BadRequest, _logger);
-            }
-            else if((GetByFirstName(customerDto.FirstName) != null))
-            {
-                return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to add customer - First name must be unique", (int)HttpStatusCode.BadRequest, _logger);
-            }
-            else if((GetByPhone(customerDto.Phone) != null))
+            }            
+            else if(_repository.GetByPhone(customerDto.Phone) != null)
             {
                 return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to add customer - Phone must be unique", (int)HttpStatusCode.BadRequest, _logger);
             }
@@ -52,6 +49,8 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetCustomerByIdDto>.Succeeded(customerDtoResult, "Category added successfully", (int)HttpStatusCode.Created);
         }
 
+
+
         public ServiceResult<GetCustomerByIdDto> Delete(int id)
         {
             var customer = _repository.GetById(id);
@@ -67,6 +66,8 @@ namespace BookRentalApp.Business.Service
 
         }
 
+
+
         public ServiceResult<List<GetAllCustomersDto>> GetAll(int page = 0, int pageSize = 5)
         {
             var customers = _repository.GetAll(page, pageSize);
@@ -81,6 +82,8 @@ namespace BookRentalApp.Business.Service
 
         }
 
+
+
         public ServiceResult<GetCustomerByIdDto> GetByEmail(string email)
         {
             var customer = _repository.GetByEmail(email);
@@ -94,9 +97,24 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetCustomerByIdDto>.Succeeded(customerDtoResult, "Customer retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<GetCustomerByIdDto> GetByFirstName(string firstName)
+
+        public ServiceResult<List<GetAllCustomersDto>> GetByFirstName(string firstName)
         {
-            var customer = _repository.GetByFirstName(firstName);
+            var customers = _repository.GetByFirstName(firstName);
+
+            if (customers == null)
+            {
+                return ServiceResultLogger.Failed<List<GetAllCustomersDto>>(null, "Customer not found", (int)HttpStatusCode.NotFound, _logger);
+            }
+
+            var customerDtoResult = _mapper.Map<List<GetAllCustomersDto>>(customers);
+            return ServiceResult<List<GetAllCustomersDto>>.Succeeded(customerDtoResult, "Customer retrieved successfully", (int)HttpStatusCode.OK);
+        }
+
+
+        public ServiceResult<GetCustomerByIdDto> GetByPhone(string phone)
+        {
+            var customer = _repository.GetByPhone(phone);
 
             if (customer == null)
             {
@@ -106,6 +124,8 @@ namespace BookRentalApp.Business.Service
             var customerDtoResult = _mapper.Map<GetCustomerByIdDto>(customer);
             return ServiceResult<GetCustomerByIdDto>.Succeeded(customerDtoResult, "Customer retrieved successfully", (int)HttpStatusCode.OK);
         }
+
+
 
         public ServiceResult<GetCustomerByIdDto> GetById(int id)
         {
@@ -121,22 +141,15 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<GetCustomerByIdDto> GetByPhone(string phone)
-        {
-            throw new NotImplementedException();
-        }
 
+        
         public ServiceResult<GetCustomerByIdDto> Update(int id, UpdateCustomerDto customerDto)
         {
-            if ((GetByEmail(customerDto.Email) != null))
+            if (_repository.GetByEmail(customerDto.Email) != null)
             {
                 return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to update - There is a customer with that email", (int)HttpStatusCode.BadRequest, _logger);
-            }
-            else if ((GetByFirstName(customerDto.FirstName) != null))
-            {
-                return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to update - There is a customer with that name", (int)HttpStatusCode.BadRequest, _logger);
-            }
-            else if ((GetByPhone(customerDto.Phone) != null))
+            }            
+            else if (_repository.GetByPhone(customerDto.Phone) != null)
             {
                 return ServiceResultLogger.Failed<GetCustomerByIdDto>(null, "Failed to update - There is a customer with that phone", (int)HttpStatusCode.BadRequest, _logger);
             }

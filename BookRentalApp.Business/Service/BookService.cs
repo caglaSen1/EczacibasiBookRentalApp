@@ -63,19 +63,7 @@ namespace BookRentalApp.Business.Service
 
         }
 
-        public ServiceResult<List<GetAllBooksDto>> GetAll(int page = 0, int pageSize = 5, string sortBy = "Default")
-        {
-            var books = _repository.GetAll(page, pageSize, SortByString(sortBy));
-
-            if (books == null)
-            {
-                return ServiceResultLogger.Failed<List<GetAllBooksDto>>(null, "Failed to retrieve books", (int)HttpStatusCode.NotFound, _logger); 
-            }
-
-            var bookDtosResult = _mapper.Map<List<GetAllBooksDto>>(books);
-            return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Books retrieved successfully", (int)HttpStatusCode.OK);
-
-        }
+        
        
         public ServiceResult<GetBookByIdDto> GetById(int id, bool withCategory = false)
         {
@@ -90,30 +78,45 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<GetBookByIdDto> GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default")
+        public ServiceResult<List<GetAllBooksDto>> GetAll(int page = 0, int pageSize = 5, string sortBy = "Default")
         {
-            var book = _repository.GetByISBN(ISBN, withCategory, SortByString(sortBy));
+            var books = _repository.GetAll(page, pageSize, SortByString(sortBy));
 
-            if (book == null)
+            if (books == null)
             {
-                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
+                return ServiceResultLogger.Failed<List<GetAllBooksDto>>(null, "Failed to retrieve books", (int)HttpStatusCode.NotFound, _logger);
             }
 
-            var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
-            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+            var bookDtosResult = _mapper.Map<List<GetAllBooksDto>>(books);
+            return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Books retrieved successfully", (int)HttpStatusCode.OK);
+
         }
 
-        public ServiceResult<GetBookByIdDto> GetByTitle(string title, bool withCategory = false, string sortBy = "Default")
+        public ServiceResult<List<GetAllBooksDto>> GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default")
         {
-            var book = _repository.GetByISBN(title, withCategory, SortByString(sortBy));
+            var books = _repository.GetByISBN(ISBN, withCategory, SortByString(sortBy));
 
-            if (book == null)
+            if (books == null)
             {
-                return ServiceResultLogger.Failed<GetBookByIdDto>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
+                return ServiceResultLogger.Failed<List<GetAllBooksDto>>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
             }
 
-            var bookDtoResult = _mapper.Map<GetBookByIdDto>(book);
-            return ServiceResult<GetBookByIdDto>.Succeeded(bookDtoResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+            var bookDtosResult = _mapper.Map<List<GetAllBooksDto>>(books);
+            return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+        }
+
+        public ServiceResult<List<GetAllBooksDto>> GetByTitle(string title, bool withCategory = false, string sortBy = "Default")
+        {
+            var books = _repository.GetByTitle(title, withCategory, SortByString(sortBy));
+
+            if (books == null)
+            {
+                return ServiceResultLogger.Failed<List<GetAllBooksDto>>(null, "Book not found", (int)HttpStatusCode.NotFound, _logger);
+            }
+
+            var bookDtosResult = _mapper.Map<List<GetAllBooksDto>>(books);
+            return ServiceResult<List<GetAllBooksDto>>.Succeeded(bookDtosResult, "Book retrieved successfully", (int)HttpStatusCode.OK);
+
         }
 
         public ServiceResult<List<GetBookByIdDto>> Search(string title, string author, string publisher, string ISBN, int? categoryId, double? minPrice, string categoryName, bool? isAvailable, string sortBy = "Default")

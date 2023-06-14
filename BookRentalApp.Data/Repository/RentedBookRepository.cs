@@ -23,7 +23,7 @@ namespace BookRentalApp.Data.Repository
 
         public RentedBook Add(RentedBook rentedBook)
         {
-            SetMustReturnDate(rentedBook.Id, rentedBook.HowManyDaysToRent);
+            
             _context.RentedBooks.Add(rentedBook);
             _context.SaveChanges();
 
@@ -47,28 +47,7 @@ namespace BookRentalApp.Data.Repository
 
             return rentedBook;
         }
-
-        public RentedBook Update(int id, RentedBook rentedBook)
-        {
-            var updatedRentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
-            var tempRentedBook = _mapper.Map<RentedBook>(rentedBook);
-
-            if ((rentedBook.HowManyDaysToRent) != 0)
-            {
-                SetMustReturnDate(id, rentedBook.HowManyDaysToRent);
-                updatedRentedBook.HowManyDaysToRent = tempRentedBook.HowManyDaysToRent;
-                
-            }                
-
-            if ((rentedBook.BookId) != 0)                
-                updatedRentedBook.BookId = tempRentedBook.BookId;
-
-            if ((rentedBook.CustomerId) != 0)
-                updatedRentedBook.CustomerId = tempRentedBook.CustomerId;
-
-            _context.SaveChanges();
-            return updatedRentedBook;
-        }
+               
 
         public List<RentedBook> GetAll(int page = 0, int pageSize = 5)
         {
@@ -145,7 +124,7 @@ namespace BookRentalApp.Data.Repository
             return currentRentals;
         }
 
-        public List<RentedBook> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate)
+        public List<RentedBook> Search(int? customerId, int? bookId, byte? howManyDaysToRent)
         {
             var query = _context.RentedBooks.AsQueryable();
 
@@ -156,14 +135,11 @@ namespace BookRentalApp.Data.Repository
             if (bookId.HasValue)
                 query = query.Where(x => x.BookId == bookId);
 
-            if (rentalDate.HasValue)
-                query = query.Where(x => x.MustReturnDate.Equals(rentalDate.Value));
-
+            
             if (howManyDaysToRent.HasValue)
                 query = query.Where(x => x.HowManyDaysToRent == howManyDaysToRent);
 
-            if (returnDate.HasValue)
-                query = query.Where(x => x.MustReturnDate.Equals(returnDate.Value));
+            
                     
             return query.ToList();
         }
@@ -171,24 +147,9 @@ namespace BookRentalApp.Data.Repository
         public RentedBook DeliverBook(int id)
         {
             var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
-            SetReturnDate(id);
             _context.SaveChanges();
             return rentedBook;
         }
 
-        public void SetMustReturnDate(int id, byte howManyDaysToRent)
-        {
-            var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
-            rentedBook.MustReturnDate = rentedBook.RentalDate.AddDays(howManyDaysToRent);
-            _context.SaveChanges();
-            
-        }
-
-        public void SetReturnDate(int id)
-        {
-            var rentedBook = _context.RentedBooks.FirstOrDefault(x => x.Id == id);
-            rentedBook.ReturnDate = DateTime.Now;
-            _context.SaveChanges();
-        }
     }
 }

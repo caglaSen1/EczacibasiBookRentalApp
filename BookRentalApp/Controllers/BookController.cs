@@ -90,7 +90,7 @@ namespace BookRentalApp.Controllers
         [HttpGet("/ISBN/{ISBN}")]
         public IActionResult GetByISBN(string ISBN, bool withCategory = false, string sortBy = "Default")
         {
-            var result = _service.GetByTitle(ISBN, withCategory, sortBy);
+            var result = _service.GetByISBN(ISBN, withCategory, sortBy);
 
             if (result.Success)
             {

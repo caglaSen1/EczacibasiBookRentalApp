@@ -24,7 +24,8 @@ namespace BookRentalApp.Business.Service
 
         public ServiceResult<GetCategoryByIdDto> Add(CreateCategoryDto categoryDto)
         {
-            if(GetByName(categoryDto.Name) != null)
+            
+            if(_repository.GetByName(categoryDto.Name) != null)
             {
                 return ServiceResultLogger.Failed<GetCategoryByIdDto>(null, "Failed to add category - Category name must be unique", (int)HttpStatusCode.BadRequest, _logger);
             }
@@ -99,7 +100,7 @@ namespace BookRentalApp.Business.Service
 
         public ServiceResult<GetCategoryByIdDto> Update(int id, UpdateCategoryDto categoryDto)
         {
-            if (GetByName(categoryDto.Name) != null)
+            if (_repository.GetByName(categoryDto.Name) != null)
             {
                 return ServiceResultLogger.Failed<GetCategoryByIdDto>(null, "Failed to update - There is a category with that name", (int)HttpStatusCode.BadRequest, _logger);
             }

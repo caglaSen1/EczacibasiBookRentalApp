@@ -47,21 +47,25 @@ namespace BookRentalApp.Business.Service
             {
                 return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Customer not found", (int)HttpStatusCode.NotFound, _logger);
             }
-
+            
             var rentedBook = _mapper.Map<RentedBook>(rentedBookDto);
+            rentedBook.MustReturnDate = rentedBook.RentalDate.AddDays(rentedBook.HowManyDaysToRent);
 
             if (rentedBook == null)
             {
                 return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Failed to map rented book", (int)HttpStatusCode.BadRequest, _logger); 
-            }
+            }          
 
-            
+
+
             if (book.IsAvailable == false)
             {
                 return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Book is not available", (int)HttpStatusCode.NotAcceptable, _logger); 
             }
                         
             _bookService.SetAvailability(book.Id, false);
+
+            
 
             _repository.Add(rentedBook);
             var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
@@ -113,10 +117,6 @@ namespace BookRentalApp.Business.Service
             }
 
             var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
-            //rentedBookDtoResult.RentalDate = rentedBook.RentalDate.ToString("yyyy-MM-dd");
-            //rentedBookDtoResult.ReturnDate = rentedBook.ReturnDate.ToString("yyyy-MM-dd");
-            //rentedBookDtoResult.MustReturnDate = rentedBook.MustReturnDate.ToString("yyyy-MM-dd");
-
             return ServiceResult<GetRentedBookByIdDto>.Succeeded(rentedBookDtoResult, "Rented book retrieved successfully", (int)HttpStatusCode.OK);
         }
 
@@ -176,35 +176,10 @@ namespace BookRentalApp.Business.Service
             return ServiceResult<List<GetRentedBookByIdDto>>.Succeeded(previousRentalsDtoResult, "The previously rented books retrieved successfully", (int)HttpStatusCode.OK);
         }
 
-        public ServiceResult<GetRentedBookByIdDto> Update(int id, UpdateRentedBookDto rentedBookDto)
+        
+        public ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, byte? howManyDaysToRent)
         {
-            var rentedBook = _repository.GetById(id);
-
-            if (rentedBook == null)
-            {
-                return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Rented book not found", (int)HttpStatusCode.NotFound, _logger); 
-            }
-
-            //var book = rentedBook.Book;
-            if (_bookService.SetAvailability(rentedBook.BookId, true).Success == false)
-            {
-                return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "The book you want to replace is not available", (int)HttpStatusCode.NotFound, _logger);
-            }
-            
-            var updatedRentedBook = _repository.Update(id, _mapper.Map<RentedBook>(rentedBookDto));
-
-            if (updatedRentedBook == null)
-            {
-                return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "Failed to update the rented book", (int)HttpStatusCode.BadRequest, _logger); 
-            }
-
-            var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(updatedRentedBook);
-            return ServiceResult<GetRentedBookByIdDto>.Succeeded(rentedBookDtoResult, "Rented book updated successfully", (int)HttpStatusCode.OK);
-        }
-
-        public ServiceResult<List<GetRentedBookByIdDto>> Search(int? customerId, int? bookId, DateTime? rentalDate, byte? howManyDaysToRent, DateTime? returnDate)
-        {
-            var rentedBooks = _repository.Search(customerId, bookId, rentalDate, howManyDaysToRent, returnDate);
+            var rentedBooks = _repository.Search(customerId, bookId, howManyDaysToRent);
 
             if (rentedBooks == null)
             {
@@ -230,12 +205,13 @@ namespace BookRentalApp.Business.Service
             { 
                 return ServiceResultLogger.Failed<GetRentedBookByIdDto>(null, "The book couldn't delivered", (int)HttpStatusCode.NotFound, _logger);
             }
+            rentedBook.ReturnDate = DateTime.Now;
 
             _repository.DeliverBook(id);
             var rentedBookDtoResult = _mapper.Map<GetRentedBookByIdDto>(rentedBook);
             return ServiceResult<GetRentedBookByIdDto>.Succeeded(rentedBookDtoResult, "Rented book delivered successfully", (int)HttpStatusCode.OK);
 
         }
-        
+
     }
 }
